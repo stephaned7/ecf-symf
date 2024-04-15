@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index
+{% endblock %}
+
+{% block body %}
+	<h1>User index</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Email</th>
+				<th>Role</th>
+				<th>Prénom</th>
+				<th>Nom</th>
+				<th>Date de naiscance</th>
+				<th>Adresse</th>
+				<th>Code postal</th>
+				<th>Ville</th>
+				<th>Numéro de téléphone</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+				<tr>
+					<td>{{ user.id }}</td>
+					<td>{{ user.email }}</td>
+					<td>
+						{% if 'ROLE_ADMIN' in user.roles %}
+							Administrateur
+						{% elseif 'ROLE_USER' in user.roles %}
+							Utilisateur
+						{% endif %}
+					</td>
+					<td>{{ user.firstname }}</td>
+					<td>{{ user.lastname }}</td>
+					<td>{{ user.birthdate ? user.birthdate|date('Y-m-d') : '' }}</td>
+					<td>{{ user.address }}</td>
+					<td>{{ user.zipcode }}</td>
+					<td>{{ user.city }}</td>
+					<td>{{ user.phoneNum }}</td>
+					<td>
+						<a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
+						<a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="12">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

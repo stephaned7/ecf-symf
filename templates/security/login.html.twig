@@ -8,9 +8,10 @@
 		<div class="row">
 			<div class="col">
 				<form method="post">
-					{# {% if error %}
+				
+					{% if error %}
 						<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-					{% endif %} #}
+					{% endif %}
 
 					{% if app.user %}
 						<div class="mb-3">
