@@ -1,4 +1,13 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+<section class="container">
+	<div class="row">
+		<div class="col">
+			{{ form_start(form) }}
+			{{ form_widget(form) }}
+			<button class="btn btn-primary mt-3">Mettre a jour</button>
+
+				<a href="{{ path('app_user') }}" class=' btn btn-primary mt-3'>Retour à mon profil</a>
+
+			{{ form_end(form) }}
+		</div>
+	</div>
+</section>

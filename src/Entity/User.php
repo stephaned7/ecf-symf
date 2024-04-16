@@ -61,6 +61,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $phone_num = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $is_banned = null;
+
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Subscription $Subscription = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -216,6 +222,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoneNum(string $phone_num): static
     {
         $this->phone_num = $phone_num;
+
+        return $this;
+    }
+
+    public function isBanned(): ?bool
+    {
+        return $this->is_banned;
+    }
+
+    public function setBanned(?bool $is_banned): static
+    {
+        $this->is_banned = $is_banned;
+
+        return $this;
+    }
+
+    public function getSubscription(): ?Subscription
+    {
+        return $this->Subscription;
+    }
+
+    public function setSubscription(?Subscription $Subscription): static
+    {
+        $this->Subscription = $Subscription;
 
         return $this;
     }

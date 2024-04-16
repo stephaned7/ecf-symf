@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User index
+{% block title %}Gestionnaire des utilisateurs
 {% endblock %}
 
 {% block body %}
-	<h1>User index</h1>
+	<h1 class='mt-3 mb-3 text-center'>Gestionnaire des utilisateurs</h1>
 
-	<table class="table">
+	<table class="table table-striped">
 		<thead>
 			<tr>
 				<th>Id</th>
@@ -16,14 +16,15 @@
 				<th>Nom</th>
 				<th>Date de naiscance</th>
 				<th>Adresse</th>
-				<th>Code postal</th>
+				<th>CP</th>
 				<th>Ville</th>
-				<th>Numéro de téléphone</th>
+				<th>Téléphone</th>
 				<th>actions</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for user in users %}
+				{% if user.isBanned == false %}
 				<tr>
 					<td>{{ user.id }}</td>
 					<td>{{ user.email }}</td>
@@ -42,10 +43,14 @@
 					<td>{{ user.city }}</td>
 					<td>{{ user.phoneNum }}</td>
 					<td>
-						<a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
-						<a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+
+						<a href="{{ path('app_user_show', {'id': user.id}) }}" class='btn btn-primary'>Voir</a>
+
+
+						<a href="{{ path('app_user_ban', {'id': user.id}) }}" class='link-light btn btn-danger' onclick="return confirm('êtes vous sur de vouloir bannir cet utilisateur?');">Bannir</a>
 					</td>
 				</tr>
+				{% endif %}
 			{% else %}
 				<tr>
 					<td colspan="12">no records found</td>

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class RegistrationController extends AbstractController
@@ -34,8 +35,12 @@ class RegistrationController extends AbstractController
 
             $this->addFlash('success', 'Votre compte a bien été créé, vous pouvez maintenant vous connecter !');
 
+            $user = $this->getUser();
+            if ($user) {
+                return $this->redirectToRoute('app_profile');
+            }
+
             return $this->redirectToRoute('app_home');
-            
         }
 
         return $this->render('registration/register.html.twig', [

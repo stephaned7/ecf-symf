@@ -21,32 +21,25 @@ class UserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ],
-            ])
-            ->add('roles', ChoiceType::class, [
-                'attr' => [
-                    'class' => 'form-control',
-                    'id' => 'roles',
-                ],
-                'choices' => [
-                    'User' => 'ROLE_USER',
-                    'Admin' => 'ROLE_ADMIN',
-                ],
-                'multiple' => false,
+                'label' => 'Email',
             ])
             ->add('firstname', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                 ],
+                'label' => 'Prénom',
             ])
             ->add('lastname', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                 ],
+                'label' => 'Nom',
             ])
             ->add('birthdate', DateType::class, [
                 'attr' => [
                     'class' => 'form-control',
                 ],
+                'label' => 'Date de naissance',
                 'widget' => 'single_text',
 
             ])
@@ -54,32 +47,26 @@ class UserType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ],
+                'label' => 'Adresse',
             ])
             ->add('zipcode', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                 ],
+                'label' => 'Code postal',
             ])
             ->add('city', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                 ],
+                'label' => 'Ville',
             ])
             ->add('phone_num', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                 ],
-            ]);      
-
-            $builder->get('roles')
-            ->addModelTransformer(new CallbackTransformer(
-                function ($rolesArray) {
-                    return count($rolesArray) ? $rolesArray[0] : null;
-                },
-                function ($rolesString) {
-                    return [$rolesString];
-                }
-            ));
+                'label' => 'Numéro de téléphone',
+            ]);
     }
 
 

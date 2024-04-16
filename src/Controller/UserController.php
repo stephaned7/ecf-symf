@@ -29,6 +29,16 @@ class UserController extends AbstractController
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
+        $user = $this->getUser();
+
+        if($user && $user->isBanned()){
+            return $this->redirectToRoute('app_ban');
+        }
+
+        if($this->getUser()->getId() !== $user->getId() && !$this->isGranted('ROLE_ADMIN')){
+            return $this->redirectToRoute('app_home');
+        }
+
         return $this->render('user/show.html.twig', [
             'user' => $user,
         ]);
@@ -37,13 +47,17 @@ class UserController extends AbstractController
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
+        if($this->getUser()->getId() !== $user->getId() && !$this->isGranted('ROLE_ADMIN')){
+            return $this->redirectToRoute('app_home');
+        }
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_user_show', ['id' => $this->getUser()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('user/edit.html.twig', [
@@ -51,6 +65,16 @@ class UserController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/{id}/ban', name: 'app_user_ban', methods: ['GET'])]
+    public function ban(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    {
+        $user->setBanned(true);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_user', [], Response::HTTP_SEE_OTHER);
+    }
+    
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
@@ -60,6 +84,6 @@ class UserController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_user', [], Response::HTTP_SEE_OTHER);
     }
 }
