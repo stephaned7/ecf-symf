@@ -20,6 +20,10 @@ class Reservations
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_fin = null;
 
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Salle $salle = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +49,18 @@ class Reservations
     public function setDateFin(\DateTimeInterface $date_fin): static
     {
         $this->date_fin = $date_fin;
+
+        return $this;
+    }
+
+    public function getSalle(): ?Salle
+    {
+        return $this->salle;
+    }
+
+    public function setSalle(?Salle $salle): static
+    {
+        $this->salle = $salle;
 
         return $this;
     }
