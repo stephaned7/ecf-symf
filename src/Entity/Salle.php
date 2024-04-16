@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
+
 use App\Repository\SalleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Collection;
 
 #[ORM\Entity(repositoryClass: SalleRepository::class)]
 class Salle
@@ -16,10 +18,13 @@ class Salle
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $nom_salle = null;
+    private ?string $nom_salle;
 
     #[ORM\Column]
     private ?int $capacite = null;
+   
+    #[ORM\Column]
+    private ?string $slug;
 
     /**
      * @var Collection<int, Reservations>
@@ -64,6 +69,17 @@ class Salle
     public function setCapacite(int $capacite): static
     {
         $this->capacite = $capacite;
+
+        return $this;
+    }
+    public function getSlug(): ?int
+    {
+        return $this->capacite;
+    }
+
+    public function setSlug(int $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }
