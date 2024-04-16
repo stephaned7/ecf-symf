@@ -27,19 +27,34 @@ class RegistrationFormType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ],
-                'label' => 'E-mail'
+                'label' => 'E-mail',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer une adresse e-mail.'
+                    ]),
+                ]
             ])
             ->add('firstname', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                 ],
-                'label' => 'Prénom'
+                'label' => 'Prénom',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer un prénom.'
+                    ]),
+                ]
             ])
             ->add('lastname', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                 ],
-                'label' => 'Nom de famille'
+                'label' => 'Nom de famille',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer un nom de famille.'
+                    ]),
+                ]
             ])
             ->add('birthdate', DateType::class, [
                 'attr' => [
@@ -68,25 +83,45 @@ class RegistrationFormType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ],
-                'label' => 'Adresse'
+                'label' => 'Adresse',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer une adresse.'
+                    ]),
+                ]
             ])
             ->add('zipcode', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                 ],
-                'label' => 'Code postal'
+                'label' => 'Code postal',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer un code postal.'
+                    ]),
+                ]
             ])
             ->add('city', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                 ],
-                'label' => 'Ville'
+                'label' => 'Ville',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer une ville.'
+                    ]),
+                ]
             ])
             ->add('phoneNum', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
                 ],
-                'label' => 'Numéro de téléphone'
+                'label' => 'Numéro de téléphone',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez entrer un numéro de téléphone.'
+                    ]),
+                ]
             ])
             ->add('RGPDConsent', CheckboxType::class, [
                 'mapped' => false,
