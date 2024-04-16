@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EquipementsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EquipementsRepository::class)]
@@ -30,6 +32,17 @@ class Equipements
 
     #[ORM\Column]
     private ?bool $climatisation = null;
+
+    /**
+     * @var Collection<int, Salle>
+     */
+    #[ORM\ManyToMany(targetEntity: Salle::class, mappedBy: 'equipements')]
+    private Collection $salles;
+
+    public function __construct()
+    {
+        $this->salles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,6 +117,33 @@ class Equipements
     public function setClimatisation(bool $climatisation): static
     {
         $this->climatisation = $climatisation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Salle>
+     */
+    public function getSalles(): Collection
+    {
+        return $this->salles;
+    }
+
+    public function addSalle(Salle $salle): static
+    {
+        if (!$this->salles->contains($salle)) {
+            $this->salles->add($salle);
+            $salle->addEquipement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSalle(Salle $salle): static
+    {
+        if ($this->salles->removeElement($salle)) {
+            $salle->removeEquipement($this);
+        }
 
         return $this;
     }

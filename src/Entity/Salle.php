@@ -27,9 +27,16 @@ class Salle
     #[ORM\OneToMany(targetEntity: Reservations::class, mappedBy: 'salle')]
     private Collection $reservations;
 
+    /**
+     * @var Collection<int, Equipements>
+     */
+    #[ORM\ManyToMany(targetEntity: Equipements::class, inversedBy: 'salles')]
+    private Collection $equipements;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
+        $this->equipements = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -87,6 +94,30 @@ class Salle
                 $reservation->setSalle(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Equipements>
+     */
+    public function getEquipements(): Collection
+    {
+        return $this->equipements;
+    }
+
+    public function addEquipement(Equipements $equipement): static
+    {
+        if (!$this->equipements->contains($equipement)) {
+            $this->equipements->add($equipement);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipement(Equipements $equipement): static
+    {
+        $this->equipements->removeElement($equipement);
 
         return $this;
     }
