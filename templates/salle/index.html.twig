@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Réservez une salle' %}
+
+{% block body %}
+  
+    <h1 class="d-flex align-items-center justify-content-center my-5">Réservez une salle </h1>
+    
+<div class="container">
+    <div class="row">
+        {% for salle in salles %}
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Salle {{ salle.nomSalle }}</h5>
+                    <p class="card-text">Capacité d'accueil : {{ salle.capacite }}</p>
+                    <a href="#" class="btn btn-primary">Réservez</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}

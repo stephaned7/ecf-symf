@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\SalleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints\Collection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: SalleRepository::class)]
 class Salle
@@ -72,12 +72,12 @@ class Salle
 
         return $this;
     }
-    public function getSlug(): ?int
+    public function getSlug():  ?string
     {
-        return $this->capacite;
+        return $this->slug;
     }
 
-    public function setSlug(int $slug): static
+    public function setSlug(string $slug): static
     {
         $this->slug = $slug;
 
