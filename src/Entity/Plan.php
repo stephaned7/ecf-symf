@@ -19,9 +19,6 @@ class Plan
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $stripe_id = null;
-
     #[ORM\Column]
     private ?int $price = null;
 
@@ -55,18 +52,6 @@ class Plan
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getStripeId(): ?string
-    {
-        return $this->stripe_id;
-    }
-
-    public function setStripeId(string $stripe_id): static
-    {
-        $this->stripe_id = $stripe_id;
 
         return $this;
     }

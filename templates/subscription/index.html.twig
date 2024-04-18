@@ -7,14 +7,17 @@
 
 	<h1 class='text-center mb-5'>Abbonez vous pour acceder à nos services</h1>
 
-	{% if app.user.stripeId %}
-		<h2 class="text-center mb-4">Vous êtes actuellement titulaire d'un abonnement
-			{% for sub in subs %}
-				{% if sub.user.id == app.user.id %}
-					{{ sub.plan.name }}
-				{% endif %}
-			{% endfor %}, merci de votre soutien, {{ app.user.firstname }}!</h2>
-	{% endif %}
+	{# {% if app.user %}
+		{% if app.user.stripeId %}
+			<h2 class="text-center mb-4">Vous êtes actuellement titulaire d'un abonnement
+				{% for sub in subs %}
+					{% if sub.user.id == app.user.id %}
+						{{ sub.plan.name }}
+					{% endif %}
+				{% endfor %}, merci de votre soutien,
+				{{ app.user.firstname }}!</h2>
+		{% endif %}
+	{% endif %} #}
 
 	<section class="container d-flex justify-content-center">
 		<div class="row">
@@ -57,7 +60,7 @@
 						</p>
 					</p>
 					{% if app.user %}
-						<a target='_blank' href="{{ plan.paymentLink }}" class='plan btn {% if plan.name == ' Mensuel' %}yearly{% elseif plan.name == ' annuel' %}monthly{% endif %} text-light'>M'abonner</a>
+						<a target='_blank' href="{{ path('app_stripe', {'id': plan.id}) }}" class='plan btn {% if plan.name == ' Mensuel' %}yearly{% elseif plan.name == ' annuel' %}monthly{% endif %} text-light'>M'abonner</a>
 					{% else %}
 						<a href="{{ path('app_login')}}" class='plan btn'>M'abonner</a>
 					{% endif %}
