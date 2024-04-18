@@ -2,17 +2,28 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Plan;
+use App\Entity\User;
+use App\Entity\Subscription;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SubscriptionController extends AbstractController
 {
-    #[Route('/subscription', name: 'app_subscription')]
-    public function index(): Response
+    #[Route('/subscription', name: 'app_sub')]
+    public function index(ManagerRegistry $doctrine): Response
     {
+        $plan = $doctrine->getRepository(Plan::class)->findAll();
+        $user = $doctrine->getRepository(User::class)->findAll();
+        $sub = $doctrine->getRepository(Subscription::class)->findAll();
+
+
         return $this->render('subscription/index.html.twig', [
-            'controller_name' => 'SubscriptionController',
+            'plans' => $plan,
+            'users' => $user,
+            'subs' => $sub,
         ]);
     }
 }

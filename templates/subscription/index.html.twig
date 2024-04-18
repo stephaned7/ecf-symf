@@ -1,20 +1,70 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SubscriptionController!{% endblock %}
+{% block title %}Hello planscriptionController!
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+	<h1 class='text-center mb-5'>Abbonez vous pour acceder à nos services</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/wamp64/www/ecf-symf/src/Controller/SubscriptionController.php</code></li>
-        <li>Your template at <code>C:/wamp64/www/ecf-symf/templates/subscription/index.html.twig</code></li>
-    </ul>
-</div>
-{% endblock %}
+	{% if app.user.stripeId %}
+		<h2 class="text-center mb-4">Vous êtes actuellement titulaire d'un abonnement
+			{% for sub in subs %}
+				{% if sub.user.id == app.user.id %}
+					{{ sub.plan.name }}
+				{% endif %}
+			{% endfor %}, merci de votre soutien, {{ app.user.firstname }}!</h2>
+	{% endif %}
+
+	<section class="container d-flex justify-content-center">
+		<div class="row">
+			{% for plan in plans %}
+
+				<div class="card tarif text-center mb-3 mx-4 border-0 mt-5 mt-sm-0 text-light {% if plan.name == 'Mensuel' %}monthly{% elseif plan.name == 'Annuel' %}yearly{% endif %}" style="width: 18rem">
+					<div class="card-body">
+						<div class="niveau">
+							<h5 class="card-title">
+								{% if plan.name == 'Monthly' %}
+									Mensuel
+								{% elseif plan.name == 'Yearly' %}
+									Annuel
+								{% endif %}
+							</h5>
+						</div>
+						<p class="card-text text-center">
+							<div class="prix">
+								<h4>{{ (plan.price / 100)|number_format(2) }}
+									€
+									{% if plan.name =='Annuel' %}
+										<br>
+										<h5>(Soit 10% d'économie)</h5>
+									{% endif %}
+								</h4>
+							</div>
+						</p>
+						<p>
+							Accès à nos service pendant
+							{% if plan.name == 'Mensuel' %}
+								<p class='planDuration'>1 mois</p>
+							{% elseif plan.name == 'Annuel' %}
+								<p class='planDuration'>1 an</p>
+							{% endif %}
+							<h5>comprenant:</h5>
+							<div class="benefits mt-3 {% if plan.name == 'Mensuel' %}yearly{% elseif plan.name == 'Annuel' %}monthly{% endif %}">
+								<p>Emprunt de livres</p>
+								<p>Location de salles de travail</p>
+							</div>
+						</p>
+					</p>
+					{% if app.user %}
+						<a target='_blank' href="{{ plan.paymentLink }}" class='plan btn {% if plan.name == ' Mensuel' %}yearly{% elseif plan.name == ' annuel' %}monthly{% endif %} text-light'>M'abonner</a>
+					{% else %}
+						<a href="{{ path('app_login')}}" class='plan btn'>M'abonner</a>
+					{% endif %}
+				</div>
+			</div>
+
+		{% endfor %}
+
+	</div>
+</section>{% endblock %}

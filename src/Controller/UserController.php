@@ -2,14 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Plan;
 use App\Entity\User;
 use App\Form\UserType;
+use App\Entity\Subscription;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -27,9 +30,11 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user): Response
+    public function show(User $user, ManagerRegistry $doctrine): Response
     {
         $user = $this->getUser();
+        $plan = $doctrine->getRepository(Plan::class)->findAll();
+        $sub = $doctrine->getRepository(Subscription::class)->findAll();
 
         if($user && $user->isBanned()){
             return $this->redirectToRoute('app_ban');
@@ -41,6 +46,8 @@ class UserController extends AbstractController
 
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'plans' => $plan,
+            'subs' => $sub,
         ]);
     }
 

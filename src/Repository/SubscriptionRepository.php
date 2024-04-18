@@ -21,6 +21,52 @@ class SubscriptionRepository extends ServiceEntityRepository
         parent::__construct($registry, Subscription::class);
     }
 
+    public function findActiveSub($user): array
+    {
+        $data = $this
+            ->createQueryBuilder('subscription')
+
+            ->where('subscription.startingDate < :now')
+            ->andWhere('subscription.endingDate > :now')
+            ->setParameter('now', new \DateTime())
+
+            ->andWhere('subscription.user = :user')
+            ->setParameter('true', true)
+
+            ->andWhere('subscription.isActive = :true')
+            ->setParameter('true', true)
+
+            ->leftJoin('subscription.Plan', 'plan')
+            ->addSelect('plan')
+
+            ->orderBy('subscription.endingDate', 'DESC')
+            ->setMaxResults(1)
+
+            ->getQuery();
+
+        return $data->getOneOrNullResult();
+    }
+
+    public function findInactiveSub($user): array
+    {
+        $data = $this
+            ->createQueryBuilder('subscription')
+
+            ->where('subscription.startingDate < :now')
+            ->andWhere('subscription.endingDate > :now')
+            ->setParameter('now', new \DateTime())
+
+            ->andWhere('subscription.user = :user')
+            ->setParameter('true', true)
+
+            ->orderBy('subscription.endingDate', 'DESC')
+            ->setMaxResults(1)
+
+            ->getQuery();
+
+        return $data->getOneOrNullResult();
+    }
+
     //    /**
     //     * @return Subscription[] Returns an array of Subscription objects
     //     */

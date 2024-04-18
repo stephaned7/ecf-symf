@@ -1,60 +1,76 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Informations de {{ user.firstname}} - {{ user.lastname }}{% endblock %}
+{% block title %}Informations de
+	{{ user.firstname}}
+	-
+	{{ user.lastname }}
+{% endblock %}
 
 {% block body %}
-    <h1>{{ user.firstname }} - {{ user.lastname }}</h1>
+	<h1>{{ user.firstname }}
+		-
+		{{ user.lastname }}</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Prénom</th>
-                <td>{{ user.firstname }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ user.lastname }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                <td>
-                    {% if 'ROLE_ADMIN' in user.roles %}
-                        Administrateur
-                    {% elseif 'ROLE_USER' in user.roles %}
-                        Utilisateur
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>Date de naissance</th>
-                <td>{{ user.birthdate ? user.birthdate|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Adresse</th>
-                <td>{{ user.address }}</td>
-            </tr>
-            <tr>
-                <th>Code postal</th>
-                <td>{{ user.zipcode }}</td>
-            </tr>
-            <tr>
-                <th>Ville</th>
-                <td>{{ user.city }}</td>
-            </tr>
-            <tr>
-                <th>Numéro de téléphone</th>
-                <td>{{ user.phoneNum }}</td>
-            </tr>
-        </tbody>
-    </table>
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ user.id }}</td>
+			</tr>
+			<tr>
+				<th>Prénom</th>
+				<td>{{ user.firstname }}</td>
+			</tr>
+			<tr>
+				<th>Nom</th>
+				<td>{{ user.lastname }}</td>
+			</tr>
+			<tr>
+				<th>Email</th>
+				<td>{{ user.email }}</td>
+			</tr>
+			<tr>
+				<th>Abbonement</th>
+				<td>
+					{% for sub in subs %}
+						{% if sub.user.id == user.id %}
+							{{ sub.plan.name }}
+						{% endif %}
+					{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th>Roles</th>
+				<td>
+					{% if 'ROLE_ADMIN' in user.roles %}
+						Administrateur
+					{% elseif 'ROLE_USER' in user.roles %}
+						Utilisateur
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<th>Date de naissance</th>
+				<td>{{ user.birthdate ? user.birthdate|date('Y-m-d') : '' }}</td>
+			</tr>
+			<tr>
+				<th>Adresse</th>
+				<td>{{ user.address }}</td>
+			</tr>
+			<tr>
+				<th>Code postal</th>
+				<td>{{ user.zipcode }}</td>
+			</tr>
+			<tr>
+				<th>Ville</th>
+				<td>{{ user.city }}</td>
+			</tr>
+			<tr>
+				<th>Numéro de téléphone</th>
+				<td>{{ user.phoneNum }}</td>
+			</tr>
+		</tbody>
+	</table>
 
-    <a href="{{ path('app_user_edit', {'id': app.user.id}) }}" class='btn btn-primary mx-3'>Modifier mes informations</a>
+	<a href="{{ path('app_user_edit', {'id': app.user.id}) }}" class='btn btn-primary mx-3'>Modifier mes informations</a>
 {% endblock %}

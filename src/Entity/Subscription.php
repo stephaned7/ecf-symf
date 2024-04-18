@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\SubscriptionRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,94 +14,99 @@ class Subscription
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $start_date = null;
+    #[ORM\Column(length: 255)]
+    private ?string $stripe_id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $end_date = null;
+    private ?\DateTimeInterface $startingDate = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $endingDate = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $is_active = null;
 
     #[ORM\ManyToOne(inversedBy: 'subscriptions')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?SubscriptionType $SubscriptionType = null;
+    private ?Plan $plan = null;
 
-    /**
-     * @var Collection<int, User>
-     */
-    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'Subscription')]
-    private Collection $users;
-
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'subscriptions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getStartDate(): ?\DateTimeInterface
+    public function getStripeId(): ?string
     {
-        return $this->start_date;
+        return $this->stripe_id;
     }
 
-    public function setStartDate(\DateTimeInterface $start_date): static
+    public function setStripeId(string $stripe_id): static
     {
-        $this->start_date = $start_date;
+        $this->stripe_id = $stripe_id;
 
         return $this;
     }
 
-    public function getEndDate(): ?\DateTimeInterface
+    public function getStartingDate(): ?\DateTimeInterface
     {
-        return $this->end_date;
+        return $this->startingDate;
     }
 
-    public function setEndDate(\DateTimeInterface $end_date): static
+    public function setStartingDate(\DateTimeInterface $startingDate): static
     {
-        $this->end_date = $end_date;
+        $this->startingDate = $startingDate;
 
         return $this;
     }
 
-    public function getSubscriptionType(): ?SubscriptionType
+    public function getEndingDate(): ?\DateTimeInterface
     {
-        return $this->SubscriptionType;
+        return $this->endingDate;
     }
 
-    public function setSubscriptionType(?SubscriptionType $SubscriptionType): static
+    public function setEndingDate(\DateTimeInterface $endingDate): static
     {
-        $this->SubscriptionType = $SubscriptionType;
+        $this->endingDate = $endingDate;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
+    public function isActive(): ?bool
     {
-        return $this->users;
+        return $this->is_active;
     }
 
-    public function addUser(User $user): static
+    public function setActive(?bool $is_active): static
     {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->setSubscription($this);
-        }
+        $this->is_active = $is_active;
 
         return $this;
     }
 
-    public function removeUser(User $user): static
+    public function getPlan(): ?Plan
     {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getSubscription() === $this) {
-                $user->setSubscription(null);
-            }
-        }
+        return $this->plan;
+    }
+
+    public function setPlan(?Plan $plan): static
+    {
+        $this->plan = $plan;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

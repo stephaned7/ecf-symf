@@ -3,23 +3,17 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    public function __construct()
-    {
-        $this->roles = ['ROLE_USER'];
-    }
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -59,13 +53,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $city = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $phone_num = null;
+    private ?string $phoneNum = null;
 
     #[ORM\Column(nullable: true)]
     private ?bool $is_banned = null;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
-    private ?Subscription $Subscription = null;
+    /**
+     * @var Collection<int, Subscription>
+     */
+    #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'user')]
+    private Collection $subscriptions;
+
+    #[ORM\Column(length: 255)]
+    private ?string $stripe_id = null;
+
+    public function __construct()
+    {
+        $this->subscriptions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -189,7 +194,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    
+
     public function getZipcode(): ?string
     {
         return $this->zipcode;
@@ -216,12 +221,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getPhoneNum(): ?string
     {
-        return $this->phone_num;
+        return $this->phoneNum;
     }
 
-    public function setPhoneNum(string $phone_num): static
+    public function setPhoneNum(string $phoneNum): static
     {
-        $this->phone_num = $phone_num;
+        $this->phoneNum = $phoneNum;
 
         return $this;
     }
@@ -238,14 +243,44 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getSubscription(): ?Subscription
+    /**
+     * @return Collection<int, Subscription>
+     */
+    public function getSubscriptions(): Collection
     {
-        return $this->Subscription;
+        return $this->subscriptions;
     }
 
-    public function setSubscription(?Subscription $Subscription): static
+    public function addSubscription(Subscription $subscription): static
     {
-        $this->Subscription = $Subscription;
+        if (!$this->subscriptions->contains($subscription)) {
+            $this->subscriptions->add($subscription);
+            $subscription->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubscription(Subscription $subscription): static
+    {
+        if ($this->subscriptions->removeElement($subscription)) {
+            // set the owning side to null (unless already changed)
+            if ($subscription->getUser() === $this) {
+                $subscription->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getStripeId(): ?string
+    {
+        return $this->stripe_id;
+    }
+
+    public function setStripeId(string $stripe_id): static
+    {
+        $this->stripe_id = $stripe_id;
 
         return $this;
     }

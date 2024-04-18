@@ -1,3 +1,92 @@
 body {
-    background-color: skyblue;
+  background-color: skyblue;
+}
+
+.sub {
+  background-color: white;
+  border: 2px solid #24daff;
+  border-radius: 1.5rem;
+  width: 120px;
+  height: 35px;
+  line-height: 30px;
+  padding: 0;
+  color: white;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.plan{
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.subDuration{
+    border-radius: 1.5rem;
+    font-weight: bold;
+}
+
+.benefits{
+    display: flex;
+    flex-direction: column;
+    border-radius: 1.5rem;
+    font-weight: bold;
+}
+
+.tarif {
+  box-shadow: 0px 0px 10px 0px;
+  transition: transform 0.5s ease-in-out;
+  background: rgb(18, 18, 38);
+}
+
+.yearly {
+  background: radial-gradient(
+      ellipse farthest-corner at right bottom,
+      #fedb37 0%,
+      #fdb931 8%,
+      #9f7928 30%,
+      #8a6e2f 40%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse farthest-corner at left top,
+      #ffffff 0%,
+      #ffffac 8%,
+      #d1b464 25%,
+      #5d4a1f 62.5%,
+      #5d4a1f 100%
+    );
+}
+
+.monthly{
+    background: radial-gradient(
+        ellipse farthest-corner at right bottom,
+        #c0c0c0 0%, 
+        #a9a9a9 8%,
+        #808080 30%,
+        #696969 40%,
+        transparent 80%
+        ),
+        radial-gradient(
+        ellipse farthest-corner at left top,
+        #ffffff 0%,
+        #d3d3d3 8%,
+        #a9a9a9 25%,
+        #696969 62.5%,
+        #696969 100%
+        );
+}
+
+.tarif:hover {
+  transform: scale(1.1);
+  transition: 0.5s ease-in-out;
+}
+
+.sub:hover {
+  background-color: #24daff;
+  color: white;
+  transition: 0.5s ease-in-out;
+}
+
+.plan:hover{
+  transform: scale(1.1);
+  transition: 0.5s ease-in-out;
 }
