@@ -14,9 +14,6 @@ class Subscription
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $stripe_id = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $startingDate = null;
 
@@ -37,18 +34,6 @@ class Subscription
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getStripeId(): ?string
-    {
-        return $this->stripe_id;
-    }
-
-    public function setStripeId(string $stripe_id): static
-    {
-        $this->stripe_id = $stripe_id;
-
-        return $this;
     }
 
     public function getStartingDate(): ?\DateTimeInterface
