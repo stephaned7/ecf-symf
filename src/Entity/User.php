@@ -67,8 +67,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Reservations>
      */
-    #[ORM\OneToMany(targetEntity: Reservations::class, mappedBy: 'user', orphanRemoval: true)]
-    private Collection $reservations;
+    // #[ORM\OneToMany(targetEntity: Reservations::class, mappedBy: 'user', orphanRemoval: true)]
+    // private Collection $reservations;
 
     public function getId(): ?int
     {
@@ -232,30 +232,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Reservations>
      */
-    public function getReservations(): Collection
-    {
-        return $this->reservations;
-    }
+    // public function getReservations(): Collection
+    // {
+    //     return $this->reservations;
+    // }
 
-    public function addReservation(Reservations $reservation): static
-    {
-        if (!$this->reservations->contains($reservation)) {
-            $this->reservations->add($reservation);
-            $reservation->setUser($this);
-        }
+    // public function addReservation(Reservations $reservation): static
+    // {
+    //     if (!$this->reservations->contains($reservation)) {
+    //         $this->reservations->add($reservation);
+    //         $reservation->setUser($this);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function removeReservation(Reservations $reservation): static
-    {
-        if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
-            if ($reservation->getUser() === $this) {
-                $reservation->setUser(null);
-            }
-        }
+    // public function removeReservation(Reservations $reservation): static
+    // {
+    //     if ($this->reservations->removeElement($reservation)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($reservation->getUser() === $this) {
+    //             $reservation->setUser(null);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 }

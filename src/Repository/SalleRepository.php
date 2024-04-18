@@ -21,6 +21,17 @@ class SalleRepository extends ServiceEntityRepository
         parent::__construct($registry, Salle::class);
     }
 
+    public function findSallesWithEquipements(): array
+    {
+        $data = $this->createQueryBuilder('s')
+            ->leftJoin('s.equipement', 'e')
+            ->addSelect('e')
+            ->getQuery()
+            ->getResult();
+
+            return $data;
+    }
+
     //    /**
     //     * @return Salle[] Returns an array of Salle objects
     //     */

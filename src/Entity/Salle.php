@@ -2,12 +2,10 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
-
 use App\Repository\SalleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SalleRepository::class)]
 class Salle
@@ -17,31 +15,21 @@ class Salle
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $nom_salle;
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
 
     #[ORM\Column]
     private ?int $capacite = null;
-   
-    #[ORM\Column]
-    private ?string $slug;
 
     /**
-     * @var Collection<int, Reservations>
+     * @var Collection<int, Equipement>
      */
-    #[ORM\OneToMany(targetEntity: Reservations::class, mappedBy: 'salle')]
-    private Collection $reservations;
-
-    /**
-     * @var Collection<int, Equipements>
-     */
-    #[ORM\ManyToMany(targetEntity: Equipements::class, inversedBy: 'salles')]
-    private Collection $equipements;
+    #[ORM\ManyToMany(targetEntity: Equipement::class, inversedBy: 'salles')]
+    private Collection $equipement;
 
     public function __construct()
     {
-        $this->reservations = new ArrayCollection();
-        $this->equipements = new ArrayCollection();
+        $this->equipement = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -49,14 +37,14 @@ class Salle
         return $this->id;
     }
 
-    public function getNomSalle(): ?string
+    public function getNom(): ?string
     {
-        return $this->nom_salle;
+        return $this->nom;
     }
 
-    public function setNomSalle(string $nom_salle): static
+    public function setNom(string $nom): static
     {
-        $this->nom_salle = $nom_salle;
+        $this->nom = $nom;
 
         return $this;
     }
@@ -72,68 +60,27 @@ class Salle
 
         return $this;
     }
-    public function getSlug():  ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): static
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
 
     /**
-     * @return Collection<int, Reservations>
+     * @return Collection<int, Equipement>
      */
-    public function getReservations(): Collection
+    public function getEquipement(): Collection
     {
-        return $this->reservations;
+        return $this->equipement;
     }
 
-    public function addReservation(Reservations $reservation): static
+    public function addEquipement(Equipement $equipement): static
     {
-        if (!$this->reservations->contains($reservation)) {
-            $this->reservations->add($reservation);
-            $reservation->setSalle($this);
+        if (!$this->equipement->contains($equipement)) {
+            $this->equipement->add($equipement);
         }
 
         return $this;
     }
 
-    public function removeReservation(Reservations $reservation): static
+    public function removeEquipement(Equipement $equipement): static
     {
-        if ($this->reservations->removeElement($reservation)) {
-            // set the owning side to null (unless already changed)
-            if ($reservation->getSalle() === $this) {
-                $reservation->setSalle(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Equipements>
-     */
-    public function getEquipements(): Collection
-    {
-        return $this->equipements;
-    }
-
-    public function addEquipement(Equipements $equipement): static
-    {
-        if (!$this->equipements->contains($equipement)) {
-            $this->equipements->add($equipement);
-        }
-
-        return $this;
-    }
-
-    public function removeEquipement(Equipements $equipement): static
-    {
-        $this->equipements->removeElement($equipement);
+        $this->equipement->removeElement($equipement);
 
         return $this;
     }
