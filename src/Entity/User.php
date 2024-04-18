@@ -64,9 +64,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: 'user')]
     private Collection $subscriptions;
 
-    #[ORM\Column(length: 255)]
-    private ?string $stripe_id = null;
-
     public function __construct()
     {
         $this->subscriptions = new ArrayCollection();
@@ -269,18 +266,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $subscription->setUser(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getStripeId(): ?string
-    {
-        return $this->stripe_id;
-    }
-
-    public function setStripeId(string $stripe_id): static
-    {
-        $this->stripe_id = $stripe_id;
 
         return $this;
     }
