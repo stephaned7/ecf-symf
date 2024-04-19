@@ -5,19 +5,24 @@
 
 {% block body %}
 
-	<h1 class='text-center mb-5'>Abbonez vous pour acceder à nos services</h1>
+	<h1 class='text-center mb-5'>Abonnez vous pour acceder à nos services</h1>
 
-	{# {% if app.user %}
-		{% if app.user.stripeId %}
-			<h2 class="text-center mb-4">Vous êtes actuellement titulaire d'un abonnement
-				{% for sub in subs %}
-					{% if sub.user.id == app.user.id %}
-						{{ sub.plan.name }}
-					{% endif %}
-				{% endfor %}, merci de votre soutien,
-				{{ app.user.firstname }}!</h2>
+	{% if app.user is not defined or app.user is null %}
+		<h2 class="text-center mb-4">Pour profiter de nos service,
+			<a href="{{ path('app_login')}}" class='btn btn-primary'>connectez</a>
+			ou
+			<a href="{{ path('app_register')}}" class='btn btn-primary'>inscrivez</a>
+			vous</h2>
+	{% endif %}
+
+{% if app.user is not null and app.user.subscriptions is not empty %}
+    {% for sub in app.user.subscriptions %}
+		{% if sub.isActive %}
+        <h2 class="text-center mb-4">Vous êtes actuellement titulaire d'un abonnement {{ sub.plan.name }}, merci de votre soutien!</h2>
 		{% endif %}
-	{% endif %} #}
+    {% endfor %}
+{% endif %}
+
 
 	<section class="container d-flex justify-content-center">
 		<div class="row">
@@ -53,16 +58,16 @@
 								<p class='planDuration'>1 an</p>
 							{% endif %}
 							<h5>comprenant:</h5>
-							<div class="benefits mt-3 {% if plan.name == 'Mensuel' %}yearly{% elseif plan.name == 'Annuel' %}monthly{% endif %}">
+							<div class="benefits mt-3">
 								<p>Emprunt de livres</p>
 								<p>Location de salles de travail</p>
 							</div>
 						</p>
 					</p>
 					{% if app.user %}
-						<a target='_blank' href="{{ path('app_stripe', {'id': plan.id}) }}" class='plan btn {% if plan.name == ' Mensuel' %}yearly{% elseif plan.name == ' annuel' %}monthly{% endif %} text-light'>M'abonner</a>
+						<a href="{{ path('app_stripe', {'id': plan.id}) }}" class='plan btn subBtn {% if plan.name == ' Mensuel' %}yearly{% elseif plan.name == ' annuel' %}monthly{% endif %} text-light'>M'abonner</a>
 					{% else %}
-						<a href="{{ path('app_login')}}" class='plan btn'>M'abonner</a>
+						<a href="{{ path('app_login')}}" class='plan btn subBtn'>M'abonner</a>
 					{% endif %}
 				</div>
 			</div>

@@ -1,22 +1,26 @@
 body {
-  background-color: skyblue;
-}
-
-.sub {
-  background-color: white;
-  border: 2px solid #24daff;
-  border-radius: 1.5rem;
-  width: 120px;
-  height: 35px;
-  line-height: 30px;
-  padding: 0;
+  background-image: url('https://static.vecteezy.com/system/resources/previews/035/782/196/non_2x/ai-generated-cliche-library-library-background-free-photo.jpg');
   color: white;
-  background-color: rgba(255, 255, 255, 0);
 }
 
 .plan{
   font-weight: bold;
   border-radius: 8px;
+}
+
+label{
+  background-color: #28242c;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.custom-bold {
+  font-weight: bold !important;
+}
+
+.navbar{
+  background-color: rgba(17, 25, 40, 0.8);
+  color: white;
 }
 
 .subDuration{
@@ -29,6 +33,8 @@ body {
     flex-direction: column;
     border-radius: 1.5rem;
     font-weight: bold;
+    background-color: rgba(17, 25, 40, 0.25);
+    padding: 10px;
 }
 
 .tarif {
@@ -89,4 +95,9 @@ body {
 .plan:hover{
   transform: scale(1.1);
   transition: 0.5s ease-in-out;
+}
+
+.subBtn:hover{
+  background-color: rgba(17, 25, 40, 0.25);
+  transition: 0.5s ease-in-out; 
 }

@@ -14,24 +14,26 @@
 
 							<form id='checkout-form' method='post' action="{{ path('app_stripe_charge', {'id': plan.id}) }}">
 								<input type='hidden' name='stripeToken' id='stripe-token-id'>
-								<label for="card-element" class="mb-5">Abonnement
+								<label for="card-element" class="mb-5 text-light">Abonnement
 									{{ plan.name }}:
 									{{ plan.price / 100 | number_format(2) }}
 									€
 								</label>
 								<br>
 								<div id="card-element" class="form-control"></div>
-								<button id='pay-btn' class="btn btn-success mt-3" type="button" style="margin-top: 20px; width: 100%;padding: 7px;" onclick="createToken()">PAY $5
-								</button>
-								<form></div>
-							</div>
+								<button id='pay-btn' class="btn btn-success mt-3" type="button" style="margin-top: 20px; width: 100%;padding: 7px;" onclick="createToken()">payer
+									{{ plan.price / 100 | number_format(2) }}
+									€</button>
+							</button>
+							<form></div>
 						</div>
 					</div>
 				</div>
+			</div>
 
-				<script src="https://js.stripe.com/v3/"></script>
-				<script>
-					let stripe = Stripe("{{ stripe_key }}");
+			<script src="https://js.stripe.com/v3/"></script>
+			<script>
+				let stripe = Stripe("{{ stripe_key }}");
 let elements = stripe.elements();
 let cardElement = elements.create('card');
 cardElement.mount('#card-element');
@@ -53,5 +55,5 @@ document.getElementById('checkout-form').submit();
 }
 });
 }
-				</script>
-			{% endblock %}
+			</script>
+		{% endblock %}
