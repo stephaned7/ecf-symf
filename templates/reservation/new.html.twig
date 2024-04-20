@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Reservation{% endblock %}
+
+{% block body %}
+    <h1 class="d-flex align-items-center justify-content-center my-5">Créer une réservation</h1>
+    
+    <div class="container d-flex justify-content-center">
+        <a class="btn btn-success" href="{{ path('app_handler') }}">Voir l'ensemble des réservations</a>
+    </div>
+    {{ include('reservation/_form.html.twig') }}
+
+{% endblock %}

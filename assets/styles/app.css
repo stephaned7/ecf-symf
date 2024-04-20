@@ -101,3 +101,11 @@ label{
   background-color: rgba(17, 25, 40, 0.25);
   transition: 0.5s ease-in-out; 
 }
+
+#calendar{
+    width: 70%;
+    margin: auto;
+}
+.fc-non-business { 
+    background-color: #ffb58a82 !important; 
+}
