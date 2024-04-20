@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Nos Livres {% endblock %}
+
+{% block body %}
+   {% for l in livres %}
+       {{ l.name }}
+   {% endfor %} 
+{% endblock %}

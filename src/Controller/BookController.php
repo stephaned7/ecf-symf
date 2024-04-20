@@ -10,6 +10,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BookController extends AbstractController
 {
+    #[Route('/books', name: 'app_books')]
+    public function index(BookRepository $books) : Response {
+        $livres = $books->findAll();
+        return $this->render('book/index.html.twig', [
+            'livres'=>$livres
+        ]);
+    }
+    
     #[Route('/{slug}', name: 'book_category')]
     public function category($slug, CategoryRepository $categoryRepository): Response
     {
