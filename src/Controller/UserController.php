@@ -9,10 +9,12 @@ use App\Entity\Subscription;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Security\BannedUserVoter;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -30,20 +32,23 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user, ManagerRegistry $doctrine): Response
+    public function show(User $user, ManagerRegistry $doctrine, BannedUserVoter $banCheck, Security $security): Response
     {
-        $user = $this->getUser();
-        $plan = $doctrine->getRepository(Plan::class)->findAll();
-        $sub = $doctrine->getRepository(Subscription::class)->findAll();
-
-        if($user && $user->isBanned()){
-            return $this->redirectToRoute('app_ban');
+        
+        $currentUser = $security->getUser();
+        if(!$security->isGranted('ROLE_ADMIN') && $currentUser->getId() !== $user->getId()){
+            return $this->redirectToRoute('app_user_show', ['id' => $currentUser->getId()]);
         }
 
-        if($this->getUser()->getId() !== $user->getId() && !$this->isGranted('ROLE_ADMIN')){
+        if(!$security->isGranted('IS_NOT_BANNED')){
             return $this->redirectToRoute('app_home');
         }
 
+        $plan = $doctrine->getRepository(Plan::class)->findAll();
+        $sub = $doctrine->getRepository(Subscription::class)->findAll();
+        
+
+        
         return $this->render('user/show.html.twig', [
             'user' => $user,
             'plans' => $plan,
@@ -51,7 +56,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
+    #[Route('edit/{id}/', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         if($this->getUser()->getId() !== $user->getId() && !$this->isGranted('ROLE_ADMIN')){

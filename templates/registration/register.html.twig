@@ -12,7 +12,7 @@
 				{{ form_errors(registrationForm) }}
 
 				<fieldset class="mb-3">
-					<legend>Mon identité</legend>
+					<legend class='custom-bold'>Mon identité</legend>
 					{{ form_row(registrationForm.firstname) }}
 					{{ form_row(registrationForm.lastname) }}
 					{{ form_row(registrationForm.birthdate) }}
@@ -20,7 +20,7 @@
 				</fieldset>
 
 				<fieldset class="mb-3">
-					<legend>Mes coordonnées</legend>
+					<legend class='custom-bold'>Mes coordonnées</legend>
 					{{ form_row(registrationForm.address) }}
 					{{ form_row(registrationForm.city) }}
 					{{ form_row(registrationForm.zipcode) }}
@@ -28,7 +28,7 @@
 				</fieldset>
 
 				<fieldset class="mb-3">
-					<legend>Mon mot de passe</legend>
+					<legend class='custom-bold'>Mon mot de passe</legend>
 					{{ form_row(registrationForm.password) }}
 				</fieldset>
 

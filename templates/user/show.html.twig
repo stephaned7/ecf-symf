@@ -7,11 +7,11 @@
 {% endblock %}
 
 {% block body %}
-	<h1>{{ user.firstname }}
+	<h1 class='text-center'>{{ user.firstname }}
 		-
 		{{ user.lastname }}</h1>
 
-	<table class="table">
+	<table class="table table-dark">
 		<tbody>
 			<tr>
 				<th>Id</th>
@@ -32,45 +32,45 @@
 			<tr>
 				<th>Abbonement</th>
 				<td>
-					{% for sub in subs %}
-						{% if sub.user.id == user.id %}
-							{{ sub.plan.name }}
-						{% endif %}
-					{% endfor %}
-				</td>
-			</tr>
-			<tr>
-				<th>Roles</th>
-				<td>
-					{% if 'ROLE_ADMIN' in user.roles %}
-						Administrateur
-					{% elseif 'ROLE_USER' in user.roles %}
-						Utilisateur
+					{% if app.user is not null and app.user.subscriptions is not empty %}
+						{% for sub in app.user.subscriptions %}
+							{% if sub.isActive %}
+								{{ sub.plan.name }}
+							{% endif %}
+						{% endfor %}
 					{% endif %}
 				</td>
 			</tr>
-			<tr>
-				<th>Date de naissance</th>
-				<td>{{ user.birthdate ? user.birthdate|date('Y-m-d') : '' }}</td>
-			</tr>
-			<tr>
-				<th>Adresse</th>
-				<td>{{ user.address }}</td>
-			</tr>
-			<tr>
-				<th>Code postal</th>
-				<td>{{ user.zipcode }}</td>
-			</tr>
-			<tr>
-				<th>Ville</th>
-				<td>{{ user.city }}</td>
-			</tr>
-			<tr>
-				<th>Numéro de téléphone</th>
-				<td>{{ user.phoneNum }}</td>
-			</tr>
 		</tbody>
-	</table>
-
-	<a href="{{ path('app_user_edit', {'id': app.user.id}) }}" class='btn btn-primary mx-3'>Modifier mes informations</a>
-{% endblock %}
+	</td>
+</tr>
+<tr>
+	<th>Roles</th>
+	<td>
+		{% if 'ROLE_ADMIN' in user.roles %}
+			Administrateur
+		{% elseif 'ROLE_USER' in user.roles %}
+			Utilisateur
+		{% endif %}
+	</td>
+</tr>
+<tr>
+	<th>Date de naissance</th>
+	<td>{{ user.birthdate ? user.birthdate|date('Y-m-d') : '' }}</td>
+</tr>
+<tr>
+	<th>Adresse</th>
+	<td>{{ user.address }}</td>
+</tr>
+<tr>
+	<th>Code postal</th>
+	<td>{{ user.zipcode }}</td>
+</tr>
+<tr>
+	<th>Ville</th>
+	<td>{{ user.city }}</td>
+</tr>
+<tr>
+	<th>Numéro de téléphone</th>
+	<td>{{ user.phoneNum }}</td>
+</tr></tbody></table><a href="{{ path('app_user_edit', {'id': app.user.id}) }}" class='btn btn-primary mx-3'>Modifier mes informations</a>{% endblock %}

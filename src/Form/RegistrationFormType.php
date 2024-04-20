@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\DTO\DateConverter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -10,7 +11,6 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -25,7 +25,7 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control bg-dark text-white border-0 my-1',
                 ],
                 'label' => 'E-mail',
                 'constraints' => [
@@ -36,7 +36,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('firstname', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control bg-dark text-white border-0 my-1',
                 ],
                 'label' => 'Prénom',
                 'constraints' => [
@@ -47,7 +47,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('lastname', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control bg-dark text-white border-0 my-1',
                 ],
                 'label' => 'Nom de famille',
                 'constraints' => [
@@ -56,10 +56,10 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ]
             ])
-            ->add('birthdate', DateType::class, [
+            ->add('birthdate', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control',
-                    'placeholder' => 'JJ/MM/AAAA'
+                    'type' => 'text',
+                    'class' => 'form-control bg-dark text-white border-0 my-1',
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -68,20 +68,22 @@ class RegistrationFormType extends AbstractType
                     new Callback([
                         'callback' => function ($value, ExecutionContextInterface $context) {
                             if ($value instanceof \DateTime) {
-                                $formattedDate = $value->format('d/m/Y');
-                                if (!preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $formattedDate)) {
-                                    $context->buildViolation('La date de naissance doit être au format JJ/MM/AAAA.')
-                                        ->addViolation();
-                                }
+                                $value = $value->format('d/m/Y');
+                            }
+                    
+                            $date = \DateTime::createFromFormat('d/m/Y', $value);
+                            if ($date === false || $date->format('d/m/Y') !== $value) {
+                                $context->buildViolation('La date de naissance doit être au format JJ/MM/AAAA.')
+                                    ->addViolation();
                             }
                         }
                     ])
                 ],
-                'label' => 'Date de naissance'
+                'label' => 'Date de naissance - Format JJ/MM/AAAA',
             ])
             ->add('address', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control bg-dark text-white border-0 my-1',
                 ],
                 'label' => 'Adresse',
                 'constraints' => [
@@ -92,7 +94,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('zipcode', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control bg-dark text-white border-0 my-1',
                 ],
                 'label' => 'Code postal',
                 'constraints' => [
@@ -103,7 +105,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('city', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control bg-dark text-white border-0 my-1',
                 ],
                 'label' => 'Ville',
                 'constraints' => [
@@ -114,7 +116,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('phoneNum', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control bg-dark text-white border-0 my-1',
                 ],
                 'label' => 'Numéro de téléphone',
                 'constraints' => [
@@ -124,6 +126,9 @@ class RegistrationFormType extends AbstractType
                 ]
             ])
             ->add('RGPDConsent', CheckboxType::class, [
+                'attr' => [
+                    'class' => 'form-check-input mx-2 d-flex',
+                ],
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
@@ -131,13 +136,16 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
                 'label' => 'J\'accepte les conditions d\'utilisation de ce site',
+                'label_attr' => [
+                    'class' => 'custom-bold'
+                ],
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe doivent être identiques.',
                 'options' => [
                     'attr' => [
-                        'class' => 'form-control',
+                        'class' => 'form-control bg-dark text-white border-0 my-1   ',
                     ]
                 ],
                 'required' => true,
@@ -158,6 +166,8 @@ class RegistrationFormType extends AbstractType
                     'label' => 'Confirmer le mot de passe',
                 ],
             ]);
+        $builder->get('birthdate')->addModelTransformer(new DateConverter());
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
