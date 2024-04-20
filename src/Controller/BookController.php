@@ -11,21 +11,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class BookController extends AbstractController
 {
     #[Route('/books', name: 'app_books')]
-    public function index(BookRepository $books) : Response {
+    public function index(BookRepository $books, CategoryRepository $categories) : Response {
         $livres = $books->findAll();
+        $cat = $categories ->findAll();
         return $this->render('book/index.html.twig', [
-            'livres'=>$livres
+            'livres'=>$livres,
+            'cat' =>$cat
         ]);
     }
-    
+
     #[Route('/{slug}', name: 'book_category')]
     public function category($slug, CategoryRepository $categoryRepository): Response
     {
-        $category = $categoryRepository->findOneBy([
+        $categories = $categoryRepository->findOneBy([
             'slug' => $slug
         ]);
 
-        if (!$category) {
+        $cat = $categoryRepository->findAll();
+
+        if (!$categories) { 
             // throw new NotFoundHttpException("La catégorie demandée n'existe pas");
             // Deuxième méthode venant de l'AbstractController :
             throw $this->createNotFoundException("La catégorie demandée n'existe pas");
@@ -33,16 +37,19 @@ class BookController extends AbstractController
 
         return $this->render('book/category.html.twig', [
             'slug' => $slug,
-            'category' => $category
+            'category' => $categories,
+            'cat'=>$cat
         ]);
     }
     
     #[Route('/{category_slug}/{slug}', name: 'book_show')]
-    public function show($slug, BookRepository $bookRepository)
+    public function show($slug, BookRepository $bookRepository, CategoryRepository $categorie)
     {
         $book = $bookRepository->findOneBy([
             'slug' => $slug
         ]);
+
+        $cat = $categorie->findAll();
 
         if (!$book) {
             throw $this->createNotFoundException("Le livre demandé n'existe pas");
@@ -50,6 +57,7 @@ class BookController extends AbstractController
 
         return $this->render('book/show.html.twig', [
             'book' => $book,
+            'cat' => $cat
         ]);
     }
 }
