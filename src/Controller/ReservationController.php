@@ -9,6 +9,7 @@ use App\Form\ReservationType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ReservationRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -19,8 +20,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ReservationController extends AbstractController
 {
     #[Route('/{id}', name: 'app_reservation', methods: ['GET'])]
-    public function index($id, ReservationRepository $reservationRepository, ManagerRegistry $doctrine): Response
+    public function index($id, ReservationRepository $reservationRepository, ManagerRegistry $doctrine, Security $security): Response
     {
+        if(!$security->isGranted('IS_NOT_BANNED')){
+            return $this->redirectToRoute('app_home');
+        }
+
         $salle = $doctrine->getRepository(Salle::class)->find($id);
 
         // Vérifier si la salle existe
@@ -51,8 +56,12 @@ class ReservationController extends AbstractController
     }
 
     #[Route('/new/{id}', name: 'app_reservation_new', methods: ['GET','POST'])]
-    public function new(int $id, Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine): Response
+    public function new(int $id, Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, Security $security): Response
     {
+
+        if(!$security->isGranted('IS_NOT_BANNED')){
+            return $this->redirectToRoute('app_home');
+        }
         // Récupérer l'objet Salle correspondant à partir de l'ID
         $salle = $doctrine->getRepository(Salle::class)->find($id);
 
@@ -100,11 +109,14 @@ class ReservationController extends AbstractController
         ]);
     }
     #[Route('/handler', name: 'app_handler', methods: ['GET'])]
-    public function showAll( ReservationRepository $reservationRepository, ManagerRegistry $doctrine): Response
+    public function showAll( ReservationRepository $reservationRepository, ManagerRegistry $doctrine, Security $security): Response
     {
         $users = $doctrine->getRepository(User::class)->findAll();
         $events = $reservationRepository->findAll();
       
+        if(!$security->isGranted('IS_NOT_BANNED')){
+            return $this->redirectToRoute('app_home');
+        }
 
         foreach($events as $event){
             $rdvs[] = [

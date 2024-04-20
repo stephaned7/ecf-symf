@@ -9,9 +9,7 @@ body {
 }
 
 label{
-  background-color: #28242c;
-  border-radius: 5px;
-  padding: 5px;
+  backdrop-filter: blur(100px);
 }
 
 .custom-bold {
