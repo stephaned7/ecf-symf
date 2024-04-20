@@ -3,7 +3,7 @@
 {% block title %}Hello SalleController!{% endblock %}
 
 {% block body %}
- <h1 class="d-flex align-items-center justify-content-center my-5">Réservez une salle </h1>
+ <h1 class="d-flex align-items-center justify-content-center my-5">Les salles disponibles</h1>
     
 <div class="container">
     <div class="row">
@@ -20,8 +20,7 @@
                     {% endfor %}
                     <br>
                     <div class="d-grid ">
-                        <a href="{{ path('app_reservation') }}" class="btn  btn-primary">Réservez <i class="fa fa-calendar mx-1" aria-hidden="true"></i></a>
-                        
+                        <a href="{{ path('app_reservation', {'id': salle.id}) }}" class="btn  btn-primary">Voir les disponibilités<i class="fa fa-calendar mx-1" aria-hidden="true"></i></a>   
                     </div>
                 </div>
             </div>

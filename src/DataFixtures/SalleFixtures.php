@@ -21,7 +21,7 @@ class SalleFixtures extends Fixture
             $salle = new Salle();
             $salle->setNom($faker->lastName);
             $salle->setCapacite($faker->numberBetween(2,10));
-
+            
             $manager->persist($salle);
 
             }

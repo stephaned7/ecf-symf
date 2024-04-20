@@ -1,50 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reservation index{% endblock %}
+{% block title %}Calendrier de réservation{% endblock %}
 
 {% block body %}
 
-    <h1 class="mx-5 my-3" >Historique des réservations</h1>
-    <div class="container d-flex justify-content-end align-items-center my-3">
-        <a class="btn btn-primary" href="{{ path('app_reservation_new') }}">Create new</a>
-    </div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Start</th>
-                <th>End</th>
-                <th>Description</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for reservation in data %}
-            <tr>
-                <td>{{ reservation.id }}</td>
-                <td>{{ reservation.title }}</td>
-                <td>{{ reservation.start ? reservation.start|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ reservation.end ? reservation.end|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ reservation.description }}</td>
-                <td>
-                    <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">show</a>
-                    <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
    
-    <h1 class="mx-5 my-3" >Les créneaux disponibles </h1>
-
+    <h1 class="d-flex align-items-center justify-content-center my-5" >Les créneaux disponibles </h1>
+    {% if app.user %}
+    <div class="container d-flex align-items-center justify-content-center my-5">
+        <a class="btn btn-primary" href="{{ path('app_reservation_new', {'id' : salle.id }) }}">Réservez une date</a>
+    </div>
+    {% else %}
+      <div class="container d-flex align-items-center justify-content-center gap-5 my-5">
+        <p class="">Afin de réserver une salle, veuillez vous<a class="btn mx-2  btn-primary" href="{{ path('app_login') }}">connecter </a> ou vous <a class="btn mx-2 btn-primary" href="{{ path('app_register') }}">inscrire </a></p>
+        
+        
+    </div>
+    {% endif %}
     <div id="calendar" class=" mx-auto my-5 p-3 bg-body"></div>
-    
 
 {% endblock %}
 {% block javascripts %}
@@ -52,9 +25,9 @@
 
 
   document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
+    var calendarElt = document.getElementById('calendar');
 
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+    var calendar = new FullCalendar.Calendar(calendarElt, {
       
      initialView: 'timeGridWeek',
      headerToolbar: {
@@ -74,8 +47,8 @@
                     startTime: '8:00', // Début de la journée de travail
                     endTime: '19:00' // Fin de la journée de travail
             },
-     events: {{ data|raw }}
-    
+      events: {{ data|raw }},
+       
     });
 
     calendar.render();

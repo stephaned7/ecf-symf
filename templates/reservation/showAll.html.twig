@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reservation index{% endblock %}
+
+{% block body %}
+    <h1 class="mx-5 my-3" >Historique des réservations</h1>
+    <div class="container d-flex justify-content-end align-items-center my-3">
+        <a class="btn btn-primary" href="{{ path('app_reservation_new') }}">Create new</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reservation in events %}
+            <tr>
+                <td>{{ reservation.id }}</td>
+                <td>{{ reservation.title }}</td>
+                <td>{{ reservation.start ? reservation.start|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ reservation.end ? reservation.end|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ reservation.description }}</td>
+                <td>
+                    <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">show</a>
+                    <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+     
+        </tbody>
+    </table>
+{% endblock %}

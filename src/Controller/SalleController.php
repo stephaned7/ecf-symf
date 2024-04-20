@@ -16,7 +16,7 @@ class SalleController extends AbstractController
     
     {
         $salles = $salleRepository->findSallesWithEquipements();
-
+        
         return $this->render('salle/index.html.twig', [
             'salles' => $salles,
         ]);

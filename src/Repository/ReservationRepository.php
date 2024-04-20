@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Salle;
 use App\Entity\Reservation;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Reservation>
@@ -21,6 +22,36 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
+    public function findFutureAppointements():array
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.start > :currentDate')
+            ->setParameter('currentDate', new \DateTime())
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByRoomId(int $salleId): array
+    {
+        return $this->createQueryBuilder('r')
+                ->andWhere('r.salle = :salleId')
+                ->setParameter('salleId', $salleId)
+                ->getQuery()
+                ->getResult();
+    }
+
+   public function findByConflictingReservations(Salle $salle, \DateTime $start, \DateTime $end)
+   {
+        return $this->createQueryBuilder('r')
+                ->where('r.start = :salle')
+                ->andWhere('r.start < :end')
+                ->andWhere('r.end > :start')
+                ->setParameter('salle', $salle)
+                ->setParameter('start', $start)
+                ->setParameter('end', $end)
+                ->getQuery()
+                ->getResult();
+   }
     //    /**
     //     * @return Reservation[] Returns an array of Reservation objects
     //     */
