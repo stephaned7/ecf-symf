@@ -1,5 +1,105 @@
 body {
-    background-color: skyblue;
+  background-image: url('https://static.vecteezy.com/system/resources/previews/035/782/196/non_2x/ai-generated-cliche-library-library-background-free-photo.jpg');
+  color: white;
+}
+
+.plan{
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+label{
+  background-color: #28242c;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.custom-bold {
+  font-weight: bold !important;
+}
+
+.navbar{
+  background-color: rgba(17, 25, 40, 0.8);
+  color: white;
+}
+
+.subDuration{
+    border-radius: 1.5rem;
+    font-weight: bold;
+}
+
+.benefits{
+    display: flex;
+    flex-direction: column;
+    border-radius: 1.5rem;
+    font-weight: bold;
+    background-color: rgba(17, 25, 40, 0.25);
+    padding: 10px;
+}
+
+.tarif {
+  box-shadow: 0px 0px 10px 0px;
+  transition: transform 0.5s ease-in-out;
+  background: rgb(18, 18, 38);
+}
+
+.yearly {
+  background: radial-gradient(
+      ellipse farthest-corner at right bottom,
+      #fedb37 0%,
+      #fdb931 8%,
+      #9f7928 30%,
+      #8a6e2f 40%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse farthest-corner at left top,
+      #ffffff 0%,
+      #ffffac 8%,
+      #d1b464 25%,
+      #5d4a1f 62.5%,
+      #5d4a1f 100%
+    );
+}
+
+.monthly{
+    background: radial-gradient(
+        ellipse farthest-corner at right bottom,
+        #c0c0c0 0%, 
+        #a9a9a9 8%,
+        #808080 30%,
+        #696969 40%,
+        transparent 80%
+        ),
+        radial-gradient(
+        ellipse farthest-corner at left top,
+        #ffffff 0%,
+        #d3d3d3 8%,
+        #a9a9a9 25%,
+        #696969 62.5%,
+        #696969 100%
+        );
+}
+
+.tarif:hover {
+  transform: scale(1.1);
+  transition: 0.5s ease-in-out;
+}
+
+.sub:hover {
+  background-color: #24daff;
+  color: white;
+  transition: 0.5s ease-in-out;
+}
+
+.plan:hover{
+  transform: scale(1.1);
+  transition: 0.5s ease-in-out;
+}
+
+.subBtn:hover{
+  background-color: rgba(17, 25, 40, 0.25);
+  transition: 0.5s ease-in-out; 
 }
 
 #calendar{

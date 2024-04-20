@@ -34,6 +34,24 @@ class UserFixtures extends Fixture
         $admin->setRoles(['ROLE_ADMIN']);
         $manager->persist($admin);
 
+        $bob = new User();
+        $bob->setEmail('bob@gmail.com');
+        $bob->setFirstname('Bob');
+        $bob->setLastname('Bobinson');
+        $bob->setBirthdate(new \DateTime('1997-04-07'));
+        $bob->setAddress('2 rue de la Paix');
+        $bob->setZipcode('75000');
+        $bob->setCity('Paris');
+        $bob->setPhoneNum('0123456789');
+        $bob->setPassword(
+            $this->passwordHasher->hashPassword(
+                $bob,
+                'bob'
+            )
+        );
+        $bob->setRoles(['ROLE_USER']);
+        $manager->persist($bob);
+
         $faker = Factory::create('fr_FR');
         for($i = 0; $i < 10; $i++){
             $user = new User();

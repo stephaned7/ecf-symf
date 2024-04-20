@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand bg-dark" data-bs-theme="dark">
 
-	<div class="container-fluid">
+	<div class="container-fluid text-light">
 
 		<a class="navbar-brand" href="{{ path('app_home') }}">Bibliothèque</a>
 
@@ -25,34 +25,45 @@
 				</li>
 
 				<li class="nav-item">
-					<a class="nav-link" href="#">Nos abonnements</a>
+					<a class="nav-link" href="{{ path('app_sub')}}">Nos abonnements</a>
 				</li>
 
 			</ul>
 
 
-				<ul class='navbar-nav ms-auto mb-2 mb-lg-0'>
+			<ul class='navbar-nav ms-auto mb-2 mb-lg-0'>
 
-					{% if app.user %}
+				{% if app.user %}
 
+					{% if 'ROLE_ADMIN' in app.user.roles %}
 						<li class="nav-item">
-							<a class="nav-link" href="#">Mon compte</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{{ path('app_logout') }}">Me deconnecter</a>
-						</li>
-
-					{% else %}
-
-						<li class="nav-item">
-							<a class="nav-link" href="{{ path('app_register') }}">M'inscrire</a>
+							<a class="nav-link" href="{{ path('app_user')}}">Gestion des utilisateurs</a>
 						</li>
 
 						<li class="nav-item">
-							<a class="nav-link" href="{{ path('app_login') }}">Me connecter</a>
+							<a class="nav-link" href="{{ path('app_ban')}}">Les bannis</a>
 						</li>
-
 					{% endif %}
+
+
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_user_show', {'id': app.user.id}) }}">Mon compte</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_logout') }}">Me deconnecter</a>
+					</li>
+
+				{% else %}
+
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_register') }}">M'inscrire</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_login') }}">Me connecter</a>
+					</li>
+
+				{% endif %}
 			</ul>
 		</div>
 	</div>

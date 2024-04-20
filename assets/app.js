@@ -1,10 +1,15 @@
 import './bootstrap.js';
-/*
- * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
- */
 import './styles/app.css';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    let selectedRole = document.querySelector('select[name="roles"]').value;
+    let formData = new FormData(event.target);
+    formData.set('roles', JSON.stringify([selectedRole]));
+    fetch(event.target.action, {
+        method: 'POST',
+        body: formData
+    }).then(function(response) {
+        return response.json();
+    });
+});
