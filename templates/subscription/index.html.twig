@@ -5,7 +5,19 @@
 
 {% block body %}
 
+	{% for message in app.flashes('danger') %}
+		<div class="alert alert-danger">
+			{{ message }}
+		</div>
+	{% endfor %}
+
 	<h1 class='text-center mb-5'>Abonnez vous pour acceder à nos services</h1>
+
+	{% for message in app.flashes('error') %}
+		<div class="alert alert-danger">
+			{{ message }}
+		</div>
+	{% endfor %}
 
 	{% if app.user is not defined or app.user is null %}
 		<h2 class="text-center mb-4">Pour profiter de nos service,
@@ -15,13 +27,14 @@
 			vous</h2>
 	{% endif %}
 
-{% if app.user is not null and app.user.subscriptions is not empty %}
-    {% for sub in app.user.subscriptions %}
-		{% if sub.isActive %}
-        <h2 class="text-center mb-4">Vous êtes actuellement titulaire d'un abonnement {{ sub.plan.name }}, merci de votre soutien!</h2>
-		{% endif %}
-    {% endfor %}
-{% endif %}
+	{% if app.user is not null and app.user.subscriptions is not empty %}
+		{% for sub in app.user.subscriptions %}
+			{% if sub.isActive %}
+				<h2 class="text-center mb-4">Vous êtes actuellement titulaire d'un abonnement
+					{{ sub.plan.name }}, merci de votre soutien!</h2>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
 
 
 	<section class="container d-flex justify-content-center">

@@ -1,59 +1,84 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Calendrier de réservation{% endblock %}
+{% block title %}Calendrier de réservation
+{% endblock %}
 
 {% block body %}
 
-   
-    <h1 class="d-flex align-items-center justify-content-center my-5" >Les créneaux disponibles </h1>
-    {% if app.user %}
-    <div class="container d-flex align-items-center justify-content-center my-5">
-        <a class="btn btn-primary" href="{{ path('app_reservation_new', {'id' : salle.id }) }}">Réservez une date</a>
-    </div>
-    {% else %}
-      <div class="container d-flex align-items-center justify-content-center gap-5 my-5">
-        <p class="">Afin de réserver une salle, veuillez vous<a class="btn mx-2  btn-primary" href="{{ path('app_login') }}">connecter </a> ou vous <a class="btn mx-2 btn-primary" href="{{ path('app_register') }}">inscrire </a></p>
-        
-        
-    </div>
-    {% endif %}
-    <div id="calendar" class=" mx-auto my-5 p-3 bg-body"></div>
+	<div class='mt-4'>
+		{% if app.user %}
+			{% if app.user.subscriptions is empty %}
+				<h3 class='text-center'>Vous devez être
+					<a href="{{ path('app_sub')}}" class='btn btn-primary'>abonné</a>
+					à nos services pour réserver une salle</h3>
+			{% endif %}
+		{% else %}
+			<h3 class='text-center'>Vous devez être
+				<a href="{{ path('app_login')}}" class='btn btn-primary'>Connecté</a>
+				pour acceder à nos services</h3>
+		{% endif %}
+	</div>
+
+
+	<h1 class="d-flex align-items-center justify-content-center my-5">Les créneaux disponibles
+	</h1>
+	{% if app.user %}
+		<div class="container d-flex align-items-center justify-content-center my-5">
+			<a class="btn btn-primary" href="{{ path('app_reservation_new', {'id' : salle.id }) }}">Réservez une date</a>
+		</div>
+	{% else %}
+		<div class="container d-flex align-items-center justify-content-center gap-5 my-5">
+			<p class="">Afin de réserver une salle, veuillez vous<a class="btn mx-2  btn-primary" href="{{ path('app_login') }}">connecter
+				</a>
+				ou vous
+				<a class="btn mx-2 btn-primary" href="{{ path('app_register') }}">inscrire
+				</a>
+			</p>
+
+
+		</div>
+	{% endif %}
+	<div id="calendar" class=" mx-auto my-5 p-3 bg-body"></div>
 
 {% endblock %}
 {% block javascripts %}
-    <script>
+	<script>
 
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var calendarElt = document.getElementById('calendar');
+		document.addEventListener('DOMContentLoaded', function () {
+let calendarElt = document.getElementById('calendar');
 
-    var calendar = new FullCalendar.Calendar(calendarElt, {
-      
-     initialView: 'timeGridWeek',
-     headerToolbar: {
-                start: 'prev,next today',
-                center: 'title',
-                end: 'dayGridMonth,timeGridDay',
-            },
-     locale: 'fr',
-     timeZone: 'Europe/Paris',
-     firstDay: 1,
-     allDaySlot: false, // Désactive l'option all-day
-     slotMinTime: "07:00", // Début des slots visibles
-     slotMaxTime: "20:00", // Fin des slots visibles
-     expandRows: true, // Assure que les rangées prennent toute la hauteur disponible
-     businessHours: {
-                    daysOfWeek: [1, 2, 3, 4, 5], // Jours de la semaine actifs
-                    startTime: '8:00', // Début de la journée de travail
-                    endTime: '19:00' // Fin de la journée de travail
-            },
-      events: {{ data|raw }},
-       
-    });
+let calendar = new FullCalendar.Calendar(calendarElt, {
 
-    calendar.render();
-  });
+initialView: 'timeGridWeek',
+headerToolbar: {
+start: 'prev,next today',
+center: 'title',
+end: 'dayGridMonth,timeGridDay'
+},
+locale: 'fr',
+timeZone: 'Europe/Paris',
+firstDay: 1,
+allDaySlot: false, // Désactive l'option all-day
+slotMinTime: "07:00", // Début des slots visibles
+slotMaxTime: "20:00", // Fin des slots visibles
+expandRows: true, // Assure que les rangées prennent toute la hauteur disponible
+businessHours: {
+daysOfWeek: [
+1,
+2,
+3,
+4,
+5
+], // Jours de la semaine actifs
+startTime: '8:00', // Début de la journée de travail
+endTime: '19:00' // Fin de la journée de travail
+},
+events: {{ data|raw }}
 
+});
 
-    </script>
+calendar.render();
+});
+	</script>
 {% endblock %}

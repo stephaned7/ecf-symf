@@ -33,12 +33,26 @@ class Salle
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'salle', orphanRemoval: true)]
     private Collection $reservation;
 
+    /**
+     * @var Collection<int, Reservation>
+     */
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'salle')]
+    private Collection $reservations;
+
+    /**
+     * @var Collection<int, Reservation>
+     */
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'salle')]
+    private Collection $users;
+
 
 
     public function __construct()
     {
         $this->equipement = new ArrayCollection();
         $this->reservation = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -118,6 +132,44 @@ class Salle
             // set the owning side to null (unless already changed)
             if ($reservation->getSalle() === $this) {
                 $reservation->setSalle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(Reservation $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->setSalle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(Reservation $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getSalle() === $this) {
+                $user->setSalle(null);
             }
         }
 

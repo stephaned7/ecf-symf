@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserHistoryController!
+{% endblock %}
+
+{% block body %}
+	<h1 class='text-center'>Historique de vos réservations</h1>
+
+<div class="row">
+	{% for r in reservationList %}
+		{% if r.getUsers().getId() == app.user.id %}
+			<div class="card border-secondary mx-3" style="max-width: 18rem;">
+				<div class="card-header">{{ r.title }}</div>
+				<div class="card-body text-secondary">
+					<h5 class="card-title">Salle
+						{{ r.getSalle().getNom() }}</h5>
+					<h6>
+						Le
+						{{ r.start|date('d-m-Y') }}
+						De
+						{{ r.start|date('H:i') }}
+						h jusqu'à
+						{{ r.end|date('H:i') }}
+						h
+					</h6>
+					<p class="card-text">{{ r.description }}</p>
+				</div>
+			</div>
+		{% endif %}
+	{% endfor %}
+</div>
+
+{% endblock %}

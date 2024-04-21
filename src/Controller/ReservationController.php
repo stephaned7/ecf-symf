@@ -9,6 +9,7 @@ use App\Form\ReservationType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ReservationRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -19,8 +20,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ReservationController extends AbstractController
 {
     #[Route('/{id}', name: 'app_reservation', methods: ['GET'])]
-    public function index($id, ReservationRepository $reservationRepository, ManagerRegistry $doctrine): Response
+    public function index($id, ReservationRepository $reservationRepository, ManagerRegistry $doctrine, Security $security): Response
     {
+        if(!$security->isGranted('IS_NOT_BANNED')){
+            return $this->redirectToRoute('app_home');
+        }
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $salle = $doctrine->getRepository(Salle::class)->find($id);
 
         // Vérifier si la salle existe
@@ -51,8 +57,20 @@ class ReservationController extends AbstractController
     }
 
     #[Route('/new/{id}', name: 'app_reservation_new', methods: ['GET','POST'])]
-    public function new(int $id, Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine): Response
+    public function new(int $id, Request $request, EntityManagerInterface $entityManager, ManagerRegistry $doctrine, Security $security): Response
     {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        if(!$security->isGranted('IS_NOT_BANNED')){
+            return $this->redirectToRoute('app_home');
+        }
+
+        $user = $this->getUser();
+        if($user->getSubscription() == null){
+            $this->addFlash('error', 'Vous devez souscrire à un abonnement pour effectuer une réservation.');
+            return $this->redirectToRoute('app_sub');
+        }
+
         // Récupérer l'objet Salle correspondant à partir de l'ID
         $salle = $doctrine->getRepository(Salle::class)->find($id);
 
@@ -63,9 +81,12 @@ class ReservationController extends AbstractController
 
         $reservation = new Reservation();
         $reservation->setSalle($salle);
-
-        $form = $this->createForm(ReservationType::class, $reservation);
+        
+        $form = $this->createForm(ReservationType::class, $reservation, [
+            'users' => $this->getUser()
+        ]);
         $form->handleRequest($request);
+        $reservation->setUsers($this->getUser());   
 
         // Traiter le formulaire lorsqu'il est soumis
         if ($form->isSubmitted() && $form->isValid()) {
@@ -100,11 +121,17 @@ class ReservationController extends AbstractController
         ]);
     }
     #[Route('/handler', name: 'app_handler', methods: ['GET'])]
-    public function showAll( ReservationRepository $reservationRepository, ManagerRegistry $doctrine): Response
+    public function showAll( ReservationRepository $reservationRepository, ManagerRegistry $doctrine, Security $security): Response
     {
         $users = $doctrine->getRepository(User::class)->findAll();
         $events = $reservationRepository->findAll();
       
+        if(!$security->isGranted('IS_NOT_BANNED')){
+            return $this->redirectToRoute('app_home');
+        }
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
 
         foreach($events as $event){
             $rdvs[] = [
@@ -126,8 +153,16 @@ class ReservationController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_reservation_show', methods: ['GET'])]
-    public function show(Reservation $reservation): Response
+    public function show(Reservation $reservation, Security $security): Response
     {
+
+        if(!$security->isGranted('IS_NOT_BANNED')){
+            return $this->redirectToRoute('app_home');
+        }
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+
         return $this->render('reservation/show.html.twig', [
             'reservation' => $reservation,
         ]);
@@ -136,6 +171,9 @@ class ReservationController extends AbstractController
     #[Route('/{id}/edit', name: 'app_reservation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $form = $this->createForm(ReservationType::class, $reservation);
         $form->handleRequest($request);
 
@@ -154,10 +192,15 @@ class ReservationController extends AbstractController
     #[Route('/{id}', name: 'app_reservation_delete', methods: ['POST'])]
     public function delete(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         if ($this->isCsrfTokenValid('delete'.$reservation->getId(), $request->getPayload()->get('_token'))) {
             $entityManager->remove($reservation);
             $entityManager->flush();
         }
+
+
 
         return $this->redirectToRoute('app_reservation', [], Response::HTTP_SEE_OTHER);
     }

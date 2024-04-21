@@ -16,16 +16,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class StripeController extends AbstractController
 {
     #[Route('/stripe/{id}', name: 'app_stripe')]
-    public function index(ManagerRegistry $doctrine, $id, Security $security): Response
+    public function index(ManagerRegistry $doctrine, $id, Security $security, Request $request): Response
     {
 
         $user = $this->getUser();
-        if(!$security->isGranted('IS_NOT_BANNED')){
+        if (!$security->isGranted('IS_NOT_BANNED')) {
             return $this->redirectToRoute('app_home');
         }
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        // $user = $this->$user->findAll();
-        // $sub = $this->$sub->findAll();
+        $subbed = $user->getSubscription();
+        $subUrl = $request->attributes->get('id');
+
+        if ($subbed != null) {
+            if ($user->getSubscription()->getPlan()->getId() == $subUrl) {
+                $this->addFlash(
+                    'danger',
+                    'Vous êtes déjà abonné à ce plan!'
+                );
+                return $this->redirectToRoute('app_sub');
+            }
+        }
 
         $user = $doctrine->getRepository(User::class)->findBannedUsers();
         $plan = $doctrine->getRepository(Plan::class)->find($id);
@@ -45,9 +56,11 @@ class StripeController extends AbstractController
     public function createCharge(Request $request, ManagerRegistry $doctrine, $id, Security $security)
     {
         $user = $this->getUser();
-        if(!$security->isGranted('IS_NOT_BANNED')){
+        if (!$security->isGranted('IS_NOT_BANNED')) {
             return $this->redirectToRoute('app_home');
         }
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
 
         $plan = $doctrine->getRepository(Plan::class)->find($id);
 
@@ -67,9 +80,11 @@ class StripeController extends AbstractController
                 'Vous êtes déjà abonné à ce plan!'
             );
 
-            return $this->redirectToRoute('app_stripe', 
-            ['id' => $plan->getId()],
-            Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(
+                'app_stripe',
+                ['id' => $plan->getId()],
+                Response::HTTP_SEE_OTHER
+            );
         }
 
         $activeSub = $doctrine->getRepository(Subscription::class)->findBy([
@@ -79,7 +94,7 @@ class StripeController extends AbstractController
 
         $em = $doctrine->getManager();
 
-        foreach($activeSub as $active){
+        foreach ($activeSub as $active) {
             $active->setActive(false);
             $em->persist($active);
         }
@@ -96,7 +111,7 @@ class StripeController extends AbstractController
             "description" => "Payment for plan " . $plan->getName()
         ]);
 
-        
+
 
         $this->addFlash(
             'success',
@@ -110,13 +125,17 @@ class StripeController extends AbstractController
         $sub->setStartingDate(new \DateTime());
         $sub->setEndingDate((new \DateTime())->modify('+1 month'));
         $sub->setActive(true);
+        $user->setSubscription($sub);
 
         $em = $doctrine->getManager();
         $em->persist($sub);
+        $em->persist($user);
         $em->flush();
 
-        return $this->redirectToRoute('app_stripe', 
-        ['id' => $plan->getId()],
-        Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute(
+            'app_stripe',
+            ['id' => $plan->getId()],
+            Response::HTTP_SEE_OTHER
+        );
     }
 }
