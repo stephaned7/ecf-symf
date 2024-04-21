@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Informations de
+{% block title %}{% trans %}Information  {% endtrans %}
 	{{ user.firstname}}
 	-
 	{{ user.lastname }}
 {% endblock %}
 
 {% block body %}
+
 	<h1 class='text-center'>{{ user.firstname }}
 		-
 		{{ user.lastname }}</h1>
@@ -18,19 +19,19 @@
 				<td>{{ user.id }}</td>
 			</tr>
 			<tr>
-				<th>Prénom</th>
+				<th>{% trans %}First name  {% endtrans %}</th>
 				<td>{{ user.firstname }}</td>
 			</tr>
 			<tr>
-				<th>Nom</th>
+				<th>{% trans %}Last name {% endtrans %}</th>
 				<td>{{ user.lastname }}</td>
 			</tr>
 			<tr>
-				<th>Email</th>
+				<th>{% trans %}Email  {% endtrans %}</th>
 				<td>{{ user.email }}</td>
 			</tr>
 			<tr>
-				<th>Abbonement</th>
+				<th>{% trans %}Subscription  {% endtrans %}</th>
 				<td>
 					{% if app.user is not null and app.user.subscriptions is not empty %}
 						{% for sub in app.user.subscriptions %}
@@ -48,29 +49,36 @@
 	<th>Roles</th>
 	<td>
 		{% if 'ROLE_ADMIN' in user.roles %}
-			Administrateur
+			{% trans %}Administrator {% endtrans %}
 		{% elseif 'ROLE_USER' in user.roles %}
-			Utilisateur
+			{% trans %}User  {% endtrans %}
 		{% endif %}
 	</td>
 </tr>
 <tr>
-	<th>Date de naissance</th>
+	<th>{% trans %}Date of birth  {% endtrans %}</th>
 	<td>{{ user.birthdate ? user.birthdate|date('Y-m-d') : '' }}</td>
 </tr>
 <tr>
-	<th>Adresse</th>
+	<th>{% trans %}Adress  {% endtrans %}</th>
 	<td>{{ user.address }}</td>
 </tr>
 <tr>
-	<th>Code postal</th>
+	<th>{% trans %}Zipcode  {% endtrans %}</th>
 	<td>{{ user.zipcode }}</td>
 </tr>
 <tr>
-	<th>Ville</th>
+	<th>{% trans %}City  {% endtrans %}</th>
 	<td>{{ user.city }}</td>
 </tr>
 <tr>
-	<th>Numéro de téléphone</th>
+	<th>{% trans %}Phone {% endtrans %}</th>
 	<td>{{ user.phoneNum }}</td>
-</tr></tbody></table><a href="{{ path('app_user_edit', {'id': app.user.id}) }}" class='btn btn-primary mx-3'>Modifier mes informations</a>{% endblock %}
+</tr>
+</tbody>
+</table>
+ <div class="container d-flex justify-content-center">
+	<a href="{{ path('app_user_edit', {'id': app.user.id}) }}" class='btn btn-primary mx-3'>{% trans %}Change my information{% endtrans %}</a>
+	<a class="btn btn-success" href="{{ path('app_user_show_rdv', {'id': app.user.id}) }}">{% trans %}See my room reservations{% endtrans %}</a>
+</div>
+{% endblock %}

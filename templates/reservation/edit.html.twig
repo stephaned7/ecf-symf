@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Reservation{% endblock %}
+{% block title %}{% trans %}Edit Reservation {% endtrans %}{% endblock %}
 
 {% block body %}
-    <h1>Edit Reservation</h1>
+    <h1>{% trans %}Edit Reservation {% endtrans %}</h1>
 
     {{ include('reservation/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_reservation') }}">back to list</a>
+    <a href="{{ path('app_reservation') }}">{% trans %}back to list {% endtrans %}</a>
 
     {{ include('reservation/_delete_form.html.twig') }}
 {% endblock %}

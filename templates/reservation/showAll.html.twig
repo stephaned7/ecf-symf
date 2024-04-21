@@ -10,12 +10,15 @@
     <table class="table">
         <thead>
             <tr>
+            
+            
+            
                 <th>Id</th>
-                <th>Title</th>
-                <th>Start</th>
-                <th>End</th>
-                <th>Description</th>
-                <th>actions</th>
+                <th>{% trans %}Title{% endtrans %}</th>
+                <th>{% trans %}Start{% endtrans %}</th>
+                <th>{% trans %}End{% endtrans %}</th>
+                <th>{% trans %}Description{% endtrans %}</th>
+                <th>{% trans %}Actions{% endtrans %}</th>
             </tr>
         </thead>
         <tbody>
@@ -33,7 +36,8 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+            
+                <td colspan="6">{% trans %}No records found{% endtrans %}</td>
             </tr>
         {% endfor %}
      

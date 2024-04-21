@@ -7,10 +7,10 @@
 
 	{% if  app.user and app.user.isBanned == true %}
 		<div class="alert alert-danger" role="alert">
-			Vous avez été banni, vous ne pouvez plus accéder à nos services.
+			{% trans %}You have been banned, you can no longer access our services.{% endtrans %}
 		</div>
 	{% else %}
-		<h1 class='text-center'>Bienvenue</h1>
+		<h1 class='text-center'>{% trans %}Welcome{% endtrans %}</h1>
 	{% endif %}
 
 

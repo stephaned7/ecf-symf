@@ -5,20 +5,20 @@
 
 {% block body %}
 
-	<h1 class='text-center mb-5'>Abonnez vous pour acceder à nos services</h1>
+	<h1 class='text-center mb-5'>{% trans %}Subscribe to access our services{% endtrans %}</h1>
 
 	{% if app.user is not defined or app.user is null %}
-		<h2 class="text-center mb-4">Pour profiter de nos service,
-			<a href="{{ path('app_login')}}" class='btn btn-primary'>connectez</a>
+		<h2 class="text-center mb-4">{% trans %}To use our services,{% endtrans %}
+			<a href="{{ path('app_login')}}" class='btn btn-primary'>{% trans %}Login {% endtrans %}</a>
 			ou
-			<a href="{{ path('app_register')}}" class='btn btn-primary'>inscrivez</a>
+			<a href="{{ path('app_register')}}" class='btn btn-primary'>{% trans %}Sign Up{% endtrans %}</a>
 			vous</h2>
 	{% endif %}
 
 {% if app.user is not null and app.user.subscriptions is not empty %}
     {% for sub in app.user.subscriptions %}
 		{% if sub.isActive %}
-        <h2 class="text-center mb-4">Vous êtes actuellement titulaire d'un abonnement {{ sub.plan.name }}, merci de votre soutien!</h2>
+        <h2 class="text-center mb-4">{% trans %}You currently have a subscription{% endtrans %} {{ sub.plan.name }}, {% trans %}thanks for your support!{% endtrans %}</h2>
 		{% endif %}
     {% endfor %}
 {% endif %}
@@ -33,9 +33,9 @@
 						<div class="niveau">
 							<h5 class="card-title">
 								{% if plan.name == 'Monthly' %}
-									Mensuel
+									{% trans %}Monthly {% endtrans %}
 								{% elseif plan.name == 'Yearly' %}
-									Annuel
+									{% trans %}Annual {% endtrans %}
 								{% endif %}
 							</h5>
 						</div>
@@ -45,29 +45,29 @@
 									€
 									{% if plan.name =='Annuel' %}
 										<br>
-										<h5>(Soit 10% d'économie)</h5>
+										<h5>{% trans %}(Budget reductions of 10%){% endtrans %}</h5>
 									{% endif %}
 								</h4>
 							</div>
 						</p>
 						<p>
-							Accès à nos service pendant
+							{% trans %}Access to our services during{% endtrans %}
 							{% if plan.name == 'Mensuel' %}
-								<p class='planDuration'>1 mois</p>
+								<p class='planDuration'>{% trans %}1 month{% endtrans %}</p>
 							{% elseif plan.name == 'Annuel' %}
-								<p class='planDuration'>1 an</p>
+								<p class='planDuration'>{% trans %}1 year{% endtrans %}</p>
 							{% endif %}
-							<h5>comprenant:</h5>
+							<h5>{% trans %}with :{% endtrans %}</h5>
 							<div class="benefits mt-3">
-								<p>Emprunt de livres</p>
-								<p>Location de salles de travail</p>
+								<p>{% trans %}Borrowing books {% endtrans %}</p>
+								<p>{% trans %}Rental of work rooms{% endtrans %}</p>
 							</div>
 						</p>
 					</p>
 					{% if app.user %}
-						<a href="{{ path('app_stripe', {'id': plan.id}) }}" class='plan btn subBtn {% if plan.name == ' Mensuel' %}yearly{% elseif plan.name == ' annuel' %}monthly{% endif %} text-light'>M'abonner</a>
+						<a href="{{ path('app_stripe', {'id': plan.id}) }}" class='plan btn subBtn {% if plan.name == ' Mensuel' %}yearly{% elseif plan.name == ' annuel' %}monthly{% endif %} text-light'>{% trans %}Subscribe  {% endtrans %}</a>
 					{% else %}
-						<a href="{{ path('app_login')}}" class='plan btn subBtn'>M'abonner</a>
+						<a href="{{ path('app_login')}}" class='plan btn subBtn'>{% trans %}Subscribe  {% endtrans %}</a>
 					{% endif %}
 				</div>
 			</div>

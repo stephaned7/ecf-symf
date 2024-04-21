@@ -14,14 +14,14 @@
 
 							<form id='checkout-form' method='post' action="{{ path('app_stripe_charge', {'id': plan.id}) }}">
 								<input type='hidden' name='stripeToken' id='stripe-token-id'>
-								<label for="card-element" class="mb-5 text-light">Abonnement
+								<label for="card-element" class="mb-5 text-light">{% trans %}subscription{% endtrans %}
 									{{ plan.name }}:
 									{{ plan.price / 100 | number_format(2) }}
 									€
 								</label>
 								<br>
 								<div id="card-element" class="form-control"></div>
-								<button id='pay-btn' class="btn btn-success mt-3" type="button" style="margin-top: 20px; width: 100%;padding: 7px;" onclick="createToken()">payer
+								<button id='pay-btn' class="btn btn-success mt-3" type="button" style="margin-top: 20px; width: 100%;padding: 7px;" onclick="createToken()">{% trans %}Pay{% endtrans %}
 									{{ plan.price / 100 | number_format(2) }}
 									€</button>
 							</button>

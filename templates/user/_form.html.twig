@@ -3,12 +3,12 @@
 		<div class="col">
 			{{ form_start(form) }}
 			{{ form_widget(form) }}
-			<button class="btn btn-primary mt-3">Mettre a jour</button>
+			<button class="btn btn-primary mt-3">{% trans %}Update  {% endtrans %}</button>
 
-			<a href="{{ path('app_user_show', {'id' :app.user.id}) }}" class=' btn btn-primary mt-3'>Retour à mon profil</a>
+			<a href="{{ path('app_user_show', {'id' :app.user.id}) }}" class=' btn btn-primary mt-3'>{% trans %}Back to my profil {% endtrans %}</a>
 
 			{% if 'ROLE_ADMIN' in app.user.roles %}
-				<a href="{{ path('app_user')}}" class='btn btn-primary mt-3'>Gestionnaire des utilisateurs</a>
+				<a href="{{ path('app_user')}}" class='btn btn-primary mt-3'>{% trans %}User handler  {% endtrans %}</a>
 			{% endif %}
 
 

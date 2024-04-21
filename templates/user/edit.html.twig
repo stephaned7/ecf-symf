@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier mes informations
+{% block title %}{% trans %}Change my information {% endtrans %}
 {% endblock %}
 
 {% block body %}
-	<h1 class='text-center'>Modifier mes informations</h1>
+	<h1 class='text-center'>{% trans %}Change my information {% endtrans %}</h1>
 
 	{{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
 {% endblock %}

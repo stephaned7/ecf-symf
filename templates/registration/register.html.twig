@@ -1,10 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscription
-{% endblock %}
+{% block title %}{% trans %}Registration{% endtrans %} {% endblock %}
 
 {% block body %}
-	<h1 class='text-center'>Inscription</h1>
+	<h1 class='text-center'>{% trans %}Registration{% endtrans %}</h1>
 	<section class="container">
 		<div class="row">
 			<div class="col">
@@ -12,7 +11,7 @@
 				{{ form_errors(registrationForm) }}
 
 				<fieldset class="mb-3">
-					<legend class='custom-bold'>Mon identité</legend>
+					<legend class='custom-bold'>{% trans %}My identity{% endtrans %}</legend>
 					{{ form_row(registrationForm.firstname) }}
 					{{ form_row(registrationForm.lastname) }}
 					{{ form_row(registrationForm.birthdate) }}
@@ -20,7 +19,7 @@
 				</fieldset>
 
 				<fieldset class="mb-3">
-					<legend class='custom-bold'>Mes coordonnées</legend>
+					<legend class='custom-bold'>{% trans %}My details{% endtrans %}</legend>
 					{{ form_row(registrationForm.address) }}
 					{{ form_row(registrationForm.city) }}
 					{{ form_row(registrationForm.zipcode) }}
@@ -28,14 +27,14 @@
 				</fieldset>
 
 				<fieldset class="mb-3">
-					<legend class='custom-bold'>Mon mot de passe</legend>
+					<legend class='custom-bold'>{% trans %}Password{% endtrans %}</legend>
 					{{ form_row(registrationForm.password) }}
 				</fieldset>
 
 				{{ form_row(registrationForm.RGPDConsent) }}
 
-				<button type="submit" class="btn btn-primary btn-lg my-3">M'inscrire</button>
-				<a href="{{ path('app_login')}}" class='btn btn-secondary btn-lg'>Me connecter</a>
+				<button type="submit" class="btn btn-primary btn-lg my-3">{% trans %}Sign Up{% endtrans %}</button>
+				<a href="{{ path('app_login')}}" class='btn btn-secondary btn-lg'>{% trans %} Login {% endtrans %}</a>
 				{{ form_end(registrationForm) }}
 
 

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="u7LfYOv" resname="Rooms available">
+        <source>Rooms available</source>
+        <target>Salle disponible</target>
+      </trans-unit>
+      <trans-unit id="kR6onEP" resname="Room">
+        <source>Room</source>
+        <target>Salle </target>
+      </trans-unit>
+      <trans-unit id="HbctCYR" resname="Capacity :">
+        <source>Capacity :</source>
+        <target>Capacité d'accueil </target>
+      </trans-unit>
+      <trans-unit id="77C1aUS" resname="peoples">
+        <source>peoples</source>
+        <target> personnes </target>
+      </trans-unit>
+      <trans-unit id="V_bcdMo" resname="Equipment available:">
+        <source>Equipment available:</source>
+        <target>Equipment disponible :</target>
+      </trans-unit>
+      <trans-unit id="yJgY_qA" resname="Show disponibility :">
+        <source>Show disponibility :</source>
+        <target>Voir les disponibilitées </target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -6,6 +6,7 @@ use App\Entity\Plan;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Entity\Subscription;
+use App\Repository\ReservationRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -53,6 +54,26 @@ class UserController extends AbstractController
             'user' => $user,
             'plans' => $plan,
             'subs' => $sub,
+        ]);
+    }
+    #[Route('/{id}/rdv', name: 'app_user_show_rdv', methods: ['GET'])]
+    public function showAppointements(User $user, ReservationRepository $reservationRepository, Security $security): Response
+    {
+        
+        $currentUser = $security->getUser();
+        if(!$security->isGranted('ROLE_ADMIN') && $currentUser->getId() !== $user->getId()){
+            return $this->redirectToRoute('app_user_show', ['id' => $currentUser->getId()]);
+        }
+
+        if(!$security->isGranted('IS_NOT_BANNED')){
+            return $this->redirectToRoute('app_home');
+        }
+
+        $reservations = $reservationRepository->findReservationsByUserId($user->getId());
+        
+        return $this->render('user/showAppointements.html.twig', [
+            'user' => $user,
+            'events'=> $reservations
         ]);
     }
 

@@ -52,6 +52,17 @@ class ReservationRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getResult();
    }
+
+   public function findReservationsByUserId($userId):array
+    {
+        return $this->createQueryBuilder('r')
+            ->join('r.user', 'u')
+            ->andWhere('u.id = :id')
+            ->setParameter('id', $userId)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Reservation[] Returns an array of Reservation objects
     //     */

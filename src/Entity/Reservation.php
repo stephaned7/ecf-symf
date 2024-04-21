@@ -33,6 +33,10 @@ class Reservation
     #[ORM\JoinColumn(name: "salle_id", referencedColumnName: "id", nullable: false)]
     private ?Salle $salle = null;
 
+    #[ORM\ManyToOne(inversedBy: 'reservation')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
 
     public function __construct()
     {
@@ -100,6 +104,18 @@ class Reservation
     public function setSalle(?Salle $salle): static
     {
         $this->salle = $salle;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

@@ -10,7 +10,7 @@
 				<form method="post">
 					{% if  app.user and app.user.isBanned == true %}
 						<div class="alert alert-danger" role="alert">
-							Vous avez été banni, vous ne pouvez plus accéder à nos services.
+							{% trans %}You have been banned, you can no longer access our services.{% endtrans %}
 						</div>
 					{% endif %}
 
@@ -20,16 +20,16 @@
 
 						{% if app.user %}
 							<div class="mb-3">
-								Vous êtes connecté(e) en tant que
+								{% trans %} You are logged as {% endtrans %}
 								{{ app.user.userIdentifier }},
-								<a href="{{ path('app_logout') }}">Deconnexion</a>
+								<a href="{{ path('app_logout') }}">{% trans %}disconnection{% endtrans %}</a>
 							</div>
 						{% endif %}
 
-						<h1 class="h3 mb-3 font-weight-normal">Me connecter</h1>
-						<label for="inputEmail">Email</label>
+						<h1 class="h3 mb-3 font-weight-normal">{% trans %}Login {% endtrans %}</h1>
+						<label for="inputEmail">{% trans %}Email {% endtrans %}</label>
 						<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control bg-dark text-white border-0 my-1" autocomplete="email" required autofocus>
-						<label for="inputPassword">Mot de passe</label>
+						<label for="inputPassword">{% trans %} Password {% endtrans %}</label>
 						<input type="password" name="password" id="inputPassword" class="form-control bg-dark text-white border-0 my-1" autocomplete="current-password" required>
 
 						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
@@ -37,14 +37,14 @@
 						<div class="checkbox mb-3">
 							<label>
 								<input type="checkbox" name="_remember_me">
-								Remember me
+								{% trans %}Remember me {% endtrans %}
 							</label>
 						</div>
 
 						<button class="btn btn-lg btn-primary mt-3" type="submit">
-							Me connecter
+							{% trans %} Login {% endtrans %}
 						</button>
-						<a href="{{ path('app_register')}}" class='btn btn-secondary btn-lg mt-3'>M'inscrire</a>
+						<a href="{{ path('app_register')}}" class='btn btn-secondary btn-lg mt-3'>{% trans %}Sign Up {% endtrans %}</a>
 					</form>
 				</div>
 			</div>

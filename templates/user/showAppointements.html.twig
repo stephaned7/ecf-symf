@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reservation index{% endblock %}
+
+{% block body %}
+ 
+    <table class="table my-5 ">
+        <thead>
+            <tr>
+                <th>{% trans %}Last Name{% endtrans %}</th>
+                <th>{% trans %}Title{% endtrans %}</th>
+                <th>{% trans %}Description{% endtrans %}</th>
+                <th>{% trans %}Start{% endtrans %}</th>
+                <th>{% trans %}End{% endtrans %}</th>
+                <th>{% trans %}Room {% endtrans %}</th>
+                <th>{% trans %}Actions {% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reservation in events %}
+            <tr>
+    
+                <td>{{ reservation.user.lastname }}</td>
+                <td>{{ reservation.title }}</td>
+                <td>{{ reservation.description }}</td>
+                <td>{{ reservation.start ? reservation.start|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ reservation.end ? reservation.end|date('Y-m-d H:i:s') : '' }}</td>
+                <td>Salle {{ reservation.salle.nom }}</td>
+                <td>
+                    <a class="btn btn-danger" href="{{ path('app_reservation_delete', {'id': user.id}) }}">{% trans %}Delete{% endtrans %}</a>
+                    <a class="btn btn-success"href="{{ path('app_reservation_edit', {'id': user.id}) }}">{% trans %}Change{% endtrans %}</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+     
+        </tbody>
+    </table>
+{% endblock %}
