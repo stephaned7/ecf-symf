@@ -16,16 +16,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class StripeController extends AbstractController
 {
     #[Route('/stripe/{id}', name: 'app_stripe')]
-    public function index(ManagerRegistry $doctrine, $id, Security $security): Response
+    public function index(ManagerRegistry $doctrine, $id, Security $security, Request $request): Response
     {
 
         $user = $this->getUser();
         if(!$security->isGranted('IS_NOT_BANNED')){
             return $this->redirectToRoute('app_home');
         }
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        // $user = $this->$user->findAll();
-        // $sub = $this->$sub->findAll();
+        $subbed = $user->getSubscription();
+        $subUrl = $request->attributes->get('id');
+
+        if($user->getSubscription()->getPlan()->getId() == $subUrl){
+            $this->addFlash(
+                'danger',
+                'Vous êtes déjà abonné à ce plan!'
+            );
+            return $this->redirectToRoute('app_sub');
+        }
 
         $user = $doctrine->getRepository(User::class)->findBannedUsers();
         $plan = $doctrine->getRepository(Plan::class)->find($id);
@@ -48,6 +57,8 @@ class StripeController extends AbstractController
         if(!$security->isGranted('IS_NOT_BANNED')){
             return $this->redirectToRoute('app_home');
         }
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
 
         $plan = $doctrine->getRepository(Plan::class)->find($id);
 
@@ -110,9 +121,11 @@ class StripeController extends AbstractController
         $sub->setStartingDate(new \DateTime());
         $sub->setEndingDate((new \DateTime())->modify('+1 month'));
         $sub->setActive(true);
+        $user->setSubscription($sub);
 
         $em = $doctrine->getManager();
         $em->persist($sub);
+        $em->persist($user);
         $em->flush();
 
         return $this->redirectToRoute('app_stripe', 
