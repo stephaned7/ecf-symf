@@ -28,7 +28,8 @@
                     {% endfor %}
                     <br>
                     <div class="d-grid ">
-                        <a href="{{ path('app_reservation', {'id': salle.id}) }}" class="btn  btn-primary">Voir les disponibilités<i class="fa fa-calendar mx-1" aria-hidden="true"></i></a>   
+                        <a href="{{ path('app_reservation', {'id': salle.id}) }}" class="btn  btn-primary">Voir les disponibilités<i class="fa fa-calendar mx-1" aria-hidden="true"></i></a>
+                        <a href="{{ path('app_see_ratings', {'id': salle.id})}}" class='btn btn-success mt-2'>Voir les avis</a> 
                     </div>
                 </div>
             </div>

@@ -29,7 +29,7 @@ class SalleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
-            return $data;
+        return $data;
     }
 
     //    /**

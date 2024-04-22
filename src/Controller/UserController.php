@@ -79,8 +79,12 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}/ban', name: 'app_user_ban', methods: ['GET'])]
-    public function ban(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function ban(Request $request, User $user, EntityManagerInterface $entityManager, Security $security): Response
     {
+        if(!$security->isGranted('ROLE_ADMIN')){
+            return $this->redirectToRoute('app_home');
+        }
+
         $user->setBanned(true);
         $entityManager->flush();
 

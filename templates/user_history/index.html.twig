@@ -4,6 +4,11 @@
 {% endblock %}
 
 {% block body %}
+	{% for message in app.flashes('danger') %}
+		<div class="alert alert-success">
+			{{ message }}
+		</div>
+	{% endfor %}
 	<h1 class='text-center'>Historique de vos réservations</h1>
 
 <div class="row mx-4">

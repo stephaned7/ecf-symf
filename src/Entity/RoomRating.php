@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\RoomRatingRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -24,9 +26,17 @@ class RoomRating
     #[ORM\JoinColumn(nullable: false)]
     private ?User $client = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $Posted_At = null;
+
     #[ORM\ManyToOne(inversedBy: 'roomRatings')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Salle $room = null;
+    private ?Salle $Room = null;
+
+    public function __construct()
+    {
+        $this->notes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,14 +79,26 @@ class RoomRating
         return $this;
     }
 
-    public function getRoom(): ?Salle
+    public function getPostedAt(): ?\DateTimeImmutable
     {
-        return $this->room;
+        return $this->Posted_At;
     }
 
-    public function setRoom(?Salle $room): static
+    public function setPostedAt(\DateTimeImmutable $Posted_At): static
     {
-        $this->room = $room;
+        $this->Posted_At = $Posted_At;
+
+        return $this;
+    }
+
+    public function getRoom(): ?salle
+    {
+        return $this->Room;
+    }
+
+    public function setRoom(?salle $Room): static
+    {
+        $this->Room = $Room;
 
         return $this;
     }

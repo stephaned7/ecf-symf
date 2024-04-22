@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Avis
+{% endblock %}
+
+    
+    {% block body %}
+<section class="container">
+<div class="row">
+{% for r in ratingAuthor %}
+    {% if loop.index0 == 0 %}
+        <h1 class='text-center'>Avis sur la salle {{ r.room.nom }}</h1>
+        <h3 class='text-center'>Note moyenne: {{ avgRating[0]['rating']|number_format(2, '.', '') }}/5</h3>
+    {% endif %}
+	<div class="card mb-3 mx-3" style='width: 18rem'>
+		<div class="card-body mx-3">
+			<h5 class="card-title">Posté par: <br>{{ r.client.firstName }} {{ r.client.lastName }}</h5>
+            <p class="card-text">Note : {{ r.rating }}/5</p>
+			<p class="card-text">{{ r.comment }}</p>
+			<p class="card-text">
+				<small class="text-body-secondary">Posté le {{ r.postedAt | date('d:m:Y') }} à {{ r.postedAt | date('H:i:s') }}</small>
+			</p>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('app_rating_delete', {'id': r.id}) }}" class="btn btn-danger" onclick="return confirm('êtes vous sur de vouloir supprimer cet avis?');">Supprimer</a>
+            {% endif %}
+		</div>
+	</div>
+{% endfor %}
+    </section>
+</div>
+{% endblock %}

@@ -21,6 +21,28 @@ class RoomRatingRepository extends ServiceEntityRepository
         parent::__construct($registry, RoomRating::class);
     }
 
+        public function getRatingAuthor($id): array
+        {
+            return $this->createQueryBuilder('r')
+                ->select('r, u, s')
+                ->join('r.client', 'u')
+                ->join('r.Room', 's')
+                ->where('r.Room = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->getResult();
+        }
+
+        public function getAverageRating($id): array
+        {
+            return $this->createQueryBuilder('r')
+                ->select('AVG(r.rating) as rating')
+                ->where('r.Room = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->getResult();
+        }
+
     //    /**
     //     * @return RoomRating[] Returns an array of RoomRating objects
     //     */

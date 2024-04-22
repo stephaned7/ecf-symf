@@ -48,17 +48,12 @@ class Salle
     /**
      * @var Collection<int, RoomRating>
      */
-    #[ORM\OneToMany(targetEntity: RoomRating::class, mappedBy: 'room')]
+    #[ORM\OneToMany(targetEntity: RoomRating::class, mappedBy: 'Room')]
     private Collection $roomRatings;
-
-
 
     public function __construct()
     {
-        $this->equipement = new ArrayCollection();
-        $this->reservation = new ArrayCollection();
-        $this->reservations = new ArrayCollection();
-        $this->users = new ArrayCollection();
+        $this->notes = new ArrayCollection();
         $this->roomRatings = new ArrayCollection();
     }
 
@@ -212,6 +207,4 @@ class Salle
 
         return $this;
     }
-
-    
 }

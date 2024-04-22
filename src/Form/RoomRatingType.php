@@ -33,6 +33,10 @@ class RoomRatingType extends AbstractType
                 'data' => $options['room']->getId(),
                 'mapped' => false,
             ])
+            ->add('posted_at', HiddenType::class, [
+                'data' => (new \DateTimeImmutable())->format('Y-m-d H:i:s'),
+                'mapped' => false,
+            ])
         ;
     }
 
