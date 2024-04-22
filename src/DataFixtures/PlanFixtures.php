@@ -2,6 +2,12 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Plan;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+
+class PlanFixtures extends Fixture
+{
     public function load(ObjectManager $manager): void
     {
         $mensuel = new Plan();
@@ -21,3 +27,4 @@ namespace App\DataFixtures;
 
         $manager->flush();
     }
+}
