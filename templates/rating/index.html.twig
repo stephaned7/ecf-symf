@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Laisser un avis{% endblock %}
+
+{% block body %}
+<h1 class='text-center'>Donner mon avis</h1>
+{{ include('components/_ratingForm.html.twig', {'button_label': 'Envoyer'})}}
+{% endblock %}

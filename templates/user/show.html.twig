@@ -73,4 +73,6 @@
 <tr>
 	<th>Numéro de téléphone</th>
 	<td>{{ user.phoneNum }}</td>
-</tr></tbody></table><a href="{{ path('app_user_edit', {'id': app.user.id}) }}" class='btn btn-primary mx-3'>Modifier mes informations</a>{% endblock %}
+</tr></tbody></table><a href="{{ path('app_user_edit', {'id': app.user.id}) }}" class='btn btn-lg btn-primary mx-3'>Modifier mes informations</a>
+<a href="{{ path('app_users_history')}}" class='btn btn-lg btn-success'>Mes réservations</a>
+{% endblock %}

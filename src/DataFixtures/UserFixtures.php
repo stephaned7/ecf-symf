@@ -8,6 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture implements OrderedFixtureInterface
@@ -18,6 +19,9 @@ class UserFixtures extends Fixture implements OrderedFixtureInterface
     }
     public function __construct(private UserPasswordHasherInterface $passwordHasher, private SluggerInterface $slugger)
     {
+    }
+    public function getOrder():int{
+        return 1;
     }
     public function load(ObjectManager $manager): void
     {

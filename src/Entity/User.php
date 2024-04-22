@@ -14,6 +14,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -67,10 +68,44 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Subscription $subscription = null;
 
+    /**
+     * @var Collection<int, Reservation>
+     */
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'user')]
+    private Collection $reservations;
+
+    /**
+     * @var Collection<int, Reservation>
+     */
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'user')]
+    private Collection $User;
+
+    /**
+     * @var Collection<int, Reservation>
+     */
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'users')]
+    private Collection $users;
+
+    /**
+     * @var Collection<int, RoomRating>
+     */
+    #[ORM\OneToMany(targetEntity: RoomRating::class, mappedBy: 'client')]
+    private Collection $client;
+
     public function __construct()
     {
         $this->subscriptions = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
+        $this->User = new ArrayCollection();
+        $this->users = new ArrayCollection();
+        $this->client = new ArrayCollection();
     }
+
+    /**
+     * @var Collection<int, Reservation>
+     */
+    // #[ORM\OneToMany(targetEntity: Reservations::class, mappedBy: 'user', orphanRemoval: true)]
+    // private Collection $reservations;
 
     public function getId(): ?int
     {
@@ -281,6 +316,134 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSubscription(?Subscription $subscription): static
     {
         $this->subscription = $subscription;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservations>
+     */
+    // public function getReservations(): Collection
+    // {
+    //     return $this->reservations;
+    // }
+
+    // public function addReservation(Reservations $reservation): static
+    // {
+    //     if (!$this->reservations->contains($reservation)) {
+    //         $this->reservations->add($reservation);
+    //         $reservation->setUser($this);
+    //     }
+
+    //     return $this;
+    // }
+
+    // public function removeReservation(Reservations $reservation): static
+    // {
+    //     if ($this->reservations->removeElement($reservation)) {
+    //         // set the owning side to null (unless already changed)
+    //         if ($reservation->getUser() === $this) {
+    //             $reservation->setUser(null);
+    //         }
+    //     }
+
+    //     return $this;
+    // }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getUser() === $this) {
+                $reservation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getUser(): Collection
+    {
+        return $this->User;
+    }
+
+    public function addUser(Reservation $user): static
+    {
+        if (!$this->User->contains($user)) {
+            $this->User->add($user);
+            $user->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(Reservation $user): static
+    {
+        if ($this->User->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getUser() === $this) {
+                $user->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    /**
+     * @return Collection<int, RoomRating>
+     */
+    public function getClient(): Collection
+    {
+        return $this->client;
+    }
+
+    public function addClient(RoomRating $client): static
+    {
+        if (!$this->client->contains($client)) {
+            $this->client->add($client);
+            $client->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClient(RoomRating $client): static
+    {
+        if ($this->client->removeElement($client)) {
+            // set the owning side to null (unless already changed)
+            if ($client->getClient() === $this) {
+                $client->setClient(null);
+            }
+        }
 
         return $this;
     }

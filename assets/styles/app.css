@@ -9,9 +9,7 @@ body {
 }
 
 label{
-  background-color: #28242c;
-  border-radius: 5px;
-  padding: 5px;
+  backdrop-filter: blur(100px);
 }
 
 .custom-bold {
@@ -100,4 +98,12 @@ label{
 .subBtn:hover{
   background-color: rgba(17, 25, 40, 0.25);
   transition: 0.5s ease-in-out; 
+}
+
+#calendar{
+    width: 70%;
+    margin: auto;
+}
+.fc-non-business { 
+    background-color: #ffb58a82 !important; 
 }
