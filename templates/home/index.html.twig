@@ -10,7 +10,34 @@
 			Vous avez été banni, vous ne pouvez plus accéder à nos services.
 		</div>
 	{% else %}
-		<h1 class='text-center'>Bienvenue</h1>
+			<h1>Nos livres à la une</h1>
+	<div class="row">
+		{# {% for b in books %}
+			<div class="col-lg-4 col-md-4">
+				{% include "components/_book_card.html.twig" %}
+			</div>
+		{% endfor %} #}
+	</div>
+	<hr>
+	<h2>Informations pratiques</h2>
+	<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem assumenda velit nostrum eaque ullam delectus accusantium ducimus commodi? Doloribus, in. Ratione dolore distinctio maxime sequi adipisci quia reprehenderit ullam deleniti esse, aspernatur eveniet officia sint veritatis laborum ipsum consequatur omnis autem optio facilis commodi tenetur! Impedit dolorum porro odit dolorem?</p>
+	<div class="row">
+		{% include "components/_assurances.html.twig" with {
+            'color': 'primary',
+            'icone': 'fa-book-open-reader',
+            'text': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, harum?'
+        } %}
+		{% include "components/_assurances.html.twig" with {
+            'color': 'success',
+            'icone': 'fa-solid fa-school',
+            'text': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, harum?'
+        } %}
+		{% include "components/_assurances.html.twig" with {
+            'color': 'warning',
+            'icone': 'fa-solid fa-music',
+            'text': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, harum?'
+        } %}
+	</div>
 	{% endif %}
 
 
