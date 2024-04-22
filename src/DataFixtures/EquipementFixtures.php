@@ -13,7 +13,7 @@ class EquipementFixtures extends Fixture implements OrderedFixtureInterface
     public function __construct(private SalleRepository $salleRepo){}
 
     public function getOrder():int{
-        return 2;
+        return 3;
     }
     public function load(ObjectManager $manager): void
     {

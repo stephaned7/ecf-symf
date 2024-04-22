@@ -45,6 +45,12 @@ class Salle
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'salle')]
     private Collection $users;
 
+    /**
+     * @var Collection<int, RoomRating>
+     */
+    #[ORM\OneToMany(targetEntity: RoomRating::class, mappedBy: 'room')]
+    private Collection $roomRatings;
+
 
 
     public function __construct()
@@ -53,6 +59,7 @@ class Salle
         $this->reservation = new ArrayCollection();
         $this->reservations = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->roomRatings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -170,6 +177,36 @@ class Salle
             // set the owning side to null (unless already changed)
             if ($user->getSalle() === $this) {
                 $user->setSalle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RoomRating>
+     */
+    public function getRoomRatings(): Collection
+    {
+        return $this->roomRatings;
+    }
+
+    public function addRoomRating(RoomRating $roomRating): static
+    {
+        if (!$this->roomRatings->contains($roomRating)) {
+            $this->roomRatings->add($roomRating);
+            $roomRating->setRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRoomRating(RoomRating $roomRating): static
+    {
+        if ($this->roomRatings->removeElement($roomRating)) {
+            // set the owning side to null (unless already changed)
+            if ($roomRating->getRoom() === $this) {
+                $roomRating->setRoom(null);
             }
         }
 
