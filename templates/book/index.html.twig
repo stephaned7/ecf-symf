@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Nos Livres {% endblock %}
+{% block body %}
+<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme='dark' >
+	<div class="container-fluid">
+		<a class="navbar-brand" href="/">Catégories</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor04" aria-controls="navbarColor04" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarColor04">
+			<ul class="navbar-nav me-auto">
+				{% for c in cat %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('book_category', {'slug': c.slug}) }}">{{ c.name }}</a>
+					</li>
+				{% endfor %}
+			</ul>
+	<ul class="navbar-nav">
+				<li class="nav-item">
+					<a href="{{ path('admin') }}" class="btn btn-warning me-3">Admin</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+	<div class="row mt-3">
+		{% for b in livres %}
+			<div class="col-lg-4 col-md-4">
+				{% include "components/_book_card.html.twig" %}
+			</div>
+		{% endfor %}
+	</div>
+
+{% endblock %}
